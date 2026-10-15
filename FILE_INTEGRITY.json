@@ -1,0 +1,36 @@
+{
+  "schema": "TAC_GATE12_PARTIAL_SOURCE_KIT_V1",
+  "reference_commit": "629c7ca50031a585cb7efe3c0795485314fb93be",
+  "branch": "tac-full-live-v1",
+  "scope": "5 tracked source files only; NOT a complete git archive",
+  "complete_git_tree": false,
+  "trusted_host_deployment": false,
+  "live_activation_authority": false,
+  "files": {
+    "work/live/full_live_gate12_offhost_blocker_manifest_v1.py": {
+      "git_blob_sha1": "5ac5b1c0c04207175cb7c20362974bc026876ef0",
+      "sha256": "daf6a85d9462787abf0bd690ac1c7f9d3d89acb794408055d2a0e5845401f1fc",
+      "bytes": 7040
+    },
+    "work/live/full_live_live_readiness_semantics_v1.py": {
+      "git_blob_sha1": "994aa5347c213eea20d11291c2e40d3333bbad0e",
+      "sha256": "a774118ce3c9f30c91dfcb6eada1c3e07d6d8f7fe4cfb53eb713afee948b6c54",
+      "bytes": 6849
+    },
+    "work/live/full_live_live_readiness_artifact_verifier_v1.py": {
+      "git_blob_sha1": "04e88ed2dcf579203b53a102831021aae898fe41",
+      "sha256": "f0d46d6836c8b9860f485f703b89f7dba50c13793d1692ebc52e8956bd3ad76f",
+      "bytes": 2995
+    },
+    "work/live/full_live_capital_base_snapshot_policy_authority_v1.json": {
+      "git_blob_sha1": "5203ae91eb301e0069a41843c269dfb12d93ef4d",
+      "sha256": "383f488432e3aa89d414cddab4c3165e9d8cbf8c35c7e59caa19a1c8292d144b",
+      "bytes": 1554
+    },
+    "deploy/openclaw/GATE12_READONLY_HOST_HANDOFF_V1.md": {
+      "git_blob_sha1": "5a5ba2f9e99c03ef413b4225b27e77d677012b7c",
+      "sha256": "05991c94a877c713877d4a71c67dbf9fca235e635fad95a691269793c68be28f",
+      "bytes": 4163
+    }
+  }
+}

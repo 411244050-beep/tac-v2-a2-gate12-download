@@ -1,0 +1,39 @@
+{
+  "schema": "EXPLICIT_VERSIONED_CAPITAL_BASE_SNAPSHOT_V1",
+  "status": "FROZEN",
+  "branch": "tac-full-live-v1",
+  "authority": "USER_EXPLICIT_CAPITAL_BASE_POLICY_AUTHORIZATION_2026_10_09",
+  "version": "EXPLICIT_VERSIONED_CAPITAL_BASE_SNAPSHOT_V1",
+  "market": "BINANCE_USDM_FUTURES",
+  "source_endpoint": "GET /fapi/v3/account",
+  "source_field": "totalWalletBalance",
+  "quote_unit": "USDT",
+  "account_mode": "SINGLE_ASSET_ONLY",
+  "multi_assets_mode_endpoint": "GET /fapi/v1/multiAssetsMargin",
+  "multi_assets_margin_must_equal": false,
+  "independent_mode_query_required": true,
+  "refresh": "FRESH_READ_EACH_PROSPECTIVE_COMPLETED_15M_CUTOFF",
+  "snapshot_scope": "SAME_INFORMATION_CUTOFF_ONLY",
+  "cutoff_interval_ms": 900000,
+  "no_previous_cutoff_reuse": true,
+  "unrealized_pnl_addition": false,
+  "margin_balance_used": false,
+  "available_balance_used": false,
+  "invalid_or_missing_balance": "BLOCK_NEW_RISK",
+  "read_or_mode_failure": "BLOCK_NEW_RISK",
+  "existing_position_d6_management": "INDEPENDENT_CONTINUES",
+  "historical_backfill": false,
+  "no_strategy_eligibility_added": true,
+  "live_activation_authorized_by_this_policy": false,
+  "source_docs": [
+    "https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-usd-s-m-futures/api/rest-api/account",
+    "https://github.com/binance/binance-cli/blob/master/examples/derivatives-trading-usds-futures.md"
+  ],
+  "operational_effect": {
+    "TAC_LIVE_ENABLED": false,
+    "orders": 0,
+    "fills": 0,
+    "execution_intents": 0,
+    "trading": false
+  }
+}
