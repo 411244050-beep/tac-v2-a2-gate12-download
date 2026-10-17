@@ -1,25 +1,15 @@
 #!/usr/bin/env python3
-"""TAC-V2/A2 public-download encrypted stage decryptor; Python stdlib only.
+"""TAC-V2/A2 c735 six-file inactive-only source restoration; Python stdlib only.
 STAGE ONLY. Never starts or modifies a running TAC process.
 Authentication: RFC8439 ChaCha20-Poly1305, detached metadata via pinned hashes.
 """
 from __future__ import annotations
-import argparse, hashlib, hmac, json, os, struct, sys, zipfile
+import argparse, hashlib, hmac, json, os, struct, sys
 from pathlib import Path
-from io import BytesIO
 
 MAGIC=b'TAC-AIPRO-C735-SIX-CHACHA20-POLY1305-V1\n'
 AAD=b'TAC-V2-A2|C735|6-FILES|NONTRADING|INACTIVE-ONLY'
-EXPECTED_PLAIN_SHA256='a583976874d613ec859b10c33947ccb937ba5c5c438e49530205d8b5f2af210f'
-EXPECTED_ENCRYPTED_SHA256='22730a5d22bbce455808a0e5bb193d14ff5b27bd4676dacfc647d6c4d1435eed'
-ALLOWED={
- 'MANIFEST.json',
- 'VERIFY_PACKAGE_READONLY.py',
- 'PRECHECK_C735_BASE_READONLY.py',
- 'GENERATE_RUNNER_IN_UPLOAD_FOLDER_ONLY.py',
- 'README_FIRST_中文.txt',
- 'work/live/full_live_ai_pro_ws_transport_recovery_v1.py',
-}
+EXPECTED_ENCRYPTED_SHA256='ca90d61150966b1e191929abaa2b233cbe9ee8075e863c864a45f8381cdfe0cd'
 MASK=0xffffffff
 
 def _rot(x,n):return ((x<<n)|(x>>(32-n))) & MASK
@@ -88,7 +78,9 @@ def run():
  except ValueError as exc:raise ValueError('INVALID_RECOVERY_KEY') from exc
  encrypted=a.encrypted_file
  if encrypted.is_symlink() or not encrypted.is_file():raise ValueError('ENCRYPTED_INPUT_INVALID')
- data=json.loads(_unseal(encrypted.read_bytes(),key).decode('utf-8'))
+ raw_cipher=encrypted.read_bytes()
+ if len(raw_cipher)!=103334 or hashlib.sha256(raw_cipher).hexdigest()!=EXPECTED_ENCRYPTED_SHA256:raise ValueError('C735_SIX_ENCRYPTED_SHA256_MISMATCH')
+ data=json.loads(_unseal(raw_cipher,key).decode('utf-8'))
  if data.get('schema')!='TAC_C735_SIX_BYTE_EXACT_INACTIVE_RECOVERY_V1' or data.get('source_commit')!=SOURCE_COMMIT:raise ValueError('UNTRUSTED_SOURCE_BUNDLE')
  rows=data.get('files')
  if not isinstance(rows,list) or len(rows)!=6 or {x.get('path') for x in rows}!=set(SIX):raise ValueError('SIX_FILE_SET_INVALID')
@@ -115,7 +107,7 @@ def run():
    raw=patch[rel]
   else:
    src=base/rel
-   if src.is_symlink() or not src.is_file() or not src.is_file():raise ValueError('REMAINING_PIN_NOT_REGULAR:'+rel)
+   if src.is_symlink() or not src.is_file():raise ValueError('REMAINING_PIN_NOT_REGULAR:'+rel)
    import stat
    if not stat.S_ISREG(src.stat().st_mode):raise ValueError('REMAINING_PIN_NOT_REGULAR:'+rel)
    raw=src.read_bytes()
