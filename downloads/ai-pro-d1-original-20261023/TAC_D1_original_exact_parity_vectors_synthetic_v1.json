@@ -1,0 +1,359 @@
+{
+  "schema": "TAC_ORIGINAL_WP8_D1_CANONICAL_PARITY_VECTOR_PUBLIC_SYNTHETIC_V1",
+  "original_reference_file": "strategy_rc1/d1_data_math/canonical.py",
+  "reference_sha256": "a647c3f66448dbf1cb322fd7561fdc74d3584ce2c5ef1c7450dd63837ef75b62",
+  "source_zip": "TAC_original_91_sources_verified_for_AIPro_20261023.zip",
+  "reference_code_unchanged": true,
+  "is_synthetic": true,
+  "real_exchange_data": false,
+  "origin": "Computed locally by importing unchanged CanonicalBar.from_values() and canonicalize_15m() from the exact 91-source ZIP; source and manifest hash verified.",
+  "note": "Vectors are test witnesses only. Static AST equality does not attest the Binance AI Pro runtime. Each bar's close_time is directly the source k.T; stream shape must separately check T=t+899999, k.x=true, and raw str values.",
+  "bar_templates": [
+    {
+      "symbol": "SYNTHUSDT",
+      "open_time": 1800000000000,
+      "close_time": 1800000899999,
+      "open": "1.2300",
+      "high": "1.2500",
+      "low": "1.2000",
+      "close": "1.2400",
+      "base_volume": "100.0500",
+      "quote_volume": "124.0050",
+      "is_closed": true
+    },
+    {
+      "symbol": "SYNTHUSDT",
+      "open_time": 1800000900000,
+      "close_time": 1800001799999,
+      "open": "1.2400",
+      "high": "1.2600",
+      "low": "1.2300",
+      "close": "1.2550",
+      "base_volume": "99.9900",
+      "quote_volume": "125.48745",
+      "is_closed": true
+    },
+    {
+      "symbol": "SYNTHUSDT",
+      "open_time": 1800002700000,
+      "close_time": 1800003599999,
+      "open": "1.4000",
+      "high": "1.4500",
+      "low": "1.3900",
+      "close": "1.4200",
+      "base_volume": "20.0010",
+      "quote_volume": "28.40142",
+      "is_closed": true
+    }
+  ],
+  "positive_cases": [
+    {
+      "name": "TWO_CONTIGUOUS_BARS",
+      "bar_template_indices": [
+        0,
+        1
+      ],
+      "expected": {
+        "information_cutoff": 1800001799999,
+        "identical_duplicates_deduplicated": 0,
+        "records": [
+          {
+            "symbol": "SYNTHUSDT",
+            "open_time": 1800000000000,
+            "close_time": 1800000899999,
+            "canonical_segment_id": "canonical_segment:9a3e382caccb213df6030ea61f1ab643",
+            "open": {
+              "numerator": 123,
+              "denominator": 100
+            },
+            "high": {
+              "numerator": 5,
+              "denominator": 4
+            },
+            "low": {
+              "numerator": 6,
+              "denominator": 5
+            },
+            "close": {
+              "numerator": 31,
+              "denominator": 25
+            },
+            "base_volume": {
+              "numerator": 2001,
+              "denominator": 20
+            },
+            "quote_volume": {
+              "numerator": 24801,
+              "denominator": 200
+            }
+          },
+          {
+            "symbol": "SYNTHUSDT",
+            "open_time": 1800000900000,
+            "close_time": 1800001799999,
+            "canonical_segment_id": "canonical_segment:9a3e382caccb213df6030ea61f1ab643",
+            "open": {
+              "numerator": 31,
+              "denominator": 25
+            },
+            "high": {
+              "numerator": 63,
+              "denominator": 50
+            },
+            "low": {
+              "numerator": 123,
+              "denominator": 100
+            },
+            "close": {
+              "numerator": 251,
+              "denominator": 200
+            },
+            "base_volume": {
+              "numerator": 9999,
+              "denominator": 100
+            },
+            "quote_volume": {
+              "numerator": 2509749,
+              "denominator": 20000
+            }
+          }
+        ],
+        "issues": []
+      }
+    },
+    {
+      "name": "IDENTICAL_DUPLICATE_DEDUP",
+      "bar_template_indices": [
+        0,
+        0,
+        1
+      ],
+      "expected": {
+        "information_cutoff": 1800001799999,
+        "identical_duplicates_deduplicated": 1,
+        "records": [
+          {
+            "symbol": "SYNTHUSDT",
+            "open_time": 1800000000000,
+            "close_time": 1800000899999,
+            "canonical_segment_id": "canonical_segment:9a3e382caccb213df6030ea61f1ab643",
+            "open": {
+              "numerator": 123,
+              "denominator": 100
+            },
+            "high": {
+              "numerator": 5,
+              "denominator": 4
+            },
+            "low": {
+              "numerator": 6,
+              "denominator": 5
+            },
+            "close": {
+              "numerator": 31,
+              "denominator": 25
+            },
+            "base_volume": {
+              "numerator": 2001,
+              "denominator": 20
+            },
+            "quote_volume": {
+              "numerator": 24801,
+              "denominator": 200
+            }
+          },
+          {
+            "symbol": "SYNTHUSDT",
+            "open_time": 1800000900000,
+            "close_time": 1800001799999,
+            "canonical_segment_id": "canonical_segment:9a3e382caccb213df6030ea61f1ab643",
+            "open": {
+              "numerator": 31,
+              "denominator": 25
+            },
+            "high": {
+              "numerator": 63,
+              "denominator": 50
+            },
+            "low": {
+              "numerator": 123,
+              "denominator": 100
+            },
+            "close": {
+              "numerator": 251,
+              "denominator": 200
+            },
+            "base_volume": {
+              "numerator": 9999,
+              "denominator": 100
+            },
+            "quote_volume": {
+              "numerator": 2509749,
+              "denominator": 20000
+            }
+          }
+        ],
+        "issues": []
+      }
+    },
+    {
+      "name": "GAP_NEW_SEGMENT_BLOCK_ISSUE",
+      "bar_template_indices": [
+        0,
+        2
+      ],
+      "expected": {
+        "information_cutoff": 1800003599999,
+        "identical_duplicates_deduplicated": 0,
+        "records": [
+          {
+            "symbol": "SYNTHUSDT",
+            "open_time": 1800000000000,
+            "close_time": 1800000899999,
+            "canonical_segment_id": "canonical_segment:9a3e382caccb213df6030ea61f1ab643",
+            "open": {
+              "numerator": 123,
+              "denominator": 100
+            },
+            "high": {
+              "numerator": 5,
+              "denominator": 4
+            },
+            "low": {
+              "numerator": 6,
+              "denominator": 5
+            },
+            "close": {
+              "numerator": 31,
+              "denominator": 25
+            },
+            "base_volume": {
+              "numerator": 2001,
+              "denominator": 20
+            },
+            "quote_volume": {
+              "numerator": 24801,
+              "denominator": 200
+            }
+          },
+          {
+            "symbol": "SYNTHUSDT",
+            "open_time": 1800002700000,
+            "close_time": 1800003599999,
+            "canonical_segment_id": "canonical_segment:c295d0f4b4e74ad409778f3499aaa342",
+            "open": {
+              "numerator": 7,
+              "denominator": 5
+            },
+            "high": {
+              "numerator": 29,
+              "denominator": 20
+            },
+            "low": {
+              "numerator": 139,
+              "denominator": 100
+            },
+            "close": {
+              "numerator": 71,
+              "denominator": 50
+            },
+            "base_volume": {
+              "numerator": 20001,
+              "denominator": 1000
+            },
+            "quote_volume": {
+              "numerator": 1420071,
+              "denominator": 50000
+            }
+          }
+        ],
+        "issues": [
+          {
+            "code": "DATA_GAP_NEW_CANONICAL_SEGMENT",
+            "severity": "BLOCK",
+            "detail": "gap_ms=1800000; no forward fill; recursive state must reset",
+            "open_time": 1800002700000
+          }
+        ]
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "name": "FLOAT_MARKET_NUMBER_REJECTED",
+      "bar_template_indices": [
+        0
+      ],
+      "mutation": {
+        "field": "close",
+        "type": "float",
+        "value": "1.24"
+      },
+      "expected_exception": "TypeError",
+      "expected_message_contains": "float market inputs are forbidden"
+    },
+    {
+      "name": "BOOL_MARKET_NUMBER_REJECTED",
+      "bar_template_indices": [
+        0
+      ],
+      "mutation": {
+        "field": "close",
+        "type": "bool",
+        "value": true
+      },
+      "expected_exception": "TypeError",
+      "expected_message_contains": "bool is not a valid market number"
+    },
+    {
+      "name": "INVALID_HIGH",
+      "bar_template_indices": [
+        0
+      ],
+      "mutation": {
+        "field": "high",
+        "type": "str",
+        "value": "1.1000"
+      },
+      "expected_exception": "DataIntegrityBlock",
+      "expected_message_contains": "INVALID_HIGH"
+    },
+    {
+      "name": "OPEN_BAR_FORBIDDEN",
+      "bar_template_indices": [
+        0
+      ],
+      "mutation": {
+        "field": "is_closed",
+        "type": "bool",
+        "value": false
+      },
+      "expected_exception": "DataIntegrityBlock",
+      "expected_message_contains": "OPEN_BAR_FORBIDDEN"
+    },
+    {
+      "name": "CONFLICTING_DUPLICATE",
+      "bar_template_indices": [
+        0,
+        0
+      ],
+      "mutation": {
+        "index": 1,
+        "field": "close",
+        "type": "str",
+        "value": "1.2350"
+      },
+      "expected_exception": "DataIntegrityBlock",
+      "expected_message_contains": "CONFLICTING_DUPLICATE"
+    }
+  ],
+  "limits": {
+    "native_ai_pro_runtime_tested": false,
+    "full_D1_D6_F9_equivalence_proven": false,
+    "account_apis_used": false,
+    "TAC_LIVE_ENABLED": 0,
+    "orders": 0,
+    "fills": 0,
+    "execution_intents": 0
+  }
+}
