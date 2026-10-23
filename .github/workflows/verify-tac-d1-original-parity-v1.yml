@@ -1,0 +1,24 @@
+name: Verify published original TAC D1 parity vectors
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-d1-original-20261023/TAC_D1_original_exact_parity_vectors_synthetic_v1.json'
+      - 'downloads/ai-pro-d1-original-20261023/verify_original_d1_parity_v1.py'
+      - '.github/workflows/verify-tac-d1-original-parity-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-d1-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify canonical source SHA-256 and 3 positive plus 5 negative exact D1 cases
+        run: python downloads/ai-pro-d1-original-20261023/verify_original_d1_parity_v1.py
