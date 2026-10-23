@@ -45,7 +45,7 @@ def run():
         require(hashlib.sha256(z.read(ORIGINAL)).hexdigest()==EXPECTED_SHA,
                 "ORIGINAL_CANONICAL_SHA256_MISMATCH")
     data=json.loads(VECTORS.read_text(encoding="utf-8"))
-    require(data["source_sha256"]==EXPECTED_SHA and data["is_synthetic"] is True,
+    require(data["reference_sha256"]==EXPECTED_SHA and data["is_synthetic"] is True,
             "VECTOR_SOURCE_OR_SYNTHETIC_IDENTITY_DRIFT")
     sys.path.insert(0,str(BUNDLE))
     try:
