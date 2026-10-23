@@ -1,0 +1,38 @@
+name: Build TAC original D1 public downloads
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-d1-original-20261023/_reference/**'
+      - 'downloads/ai-pro-d1-original-20261023/build_downloads.py'
+      - '.github/workflows/ai-pro-d1-public-downloads.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-downloads:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Byte-verify original WP8 source and construct ZIP and D1 files
+        run: python3 downloads/ai-pro-d1-original-20261023/build_downloads.py
+      - name: Commit generated downloadable artifacts to public repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=downloads/ai-pro-d1-original-20261023
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$dir/TAC_original_91_sources_verified_for_AIPro_20261023.zip" \
+                  "$dir/TAC_D1_CanonicalBar_original_verified.py" \
+                  "$dir/TAC_D1_CanonicalBar_original_verified.txt" \
+                  "$dir/SHA256SUMS_DOWNLOADS.txt"
+          if ! git diff --cached --quiet; then
+            git commit -m "build(downloads): publish verified original D1 ZIP and canonical source"
+            git push origin HEAD:main
+          fi

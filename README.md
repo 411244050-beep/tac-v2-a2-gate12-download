@@ -1,10 +1,10 @@
 # TAC-V2/A2 — Gate 1/2 public offline inspection kit
 
-This repository distributes **five selected, unmodified text files** from the private TAC-V2/A2 source reference commit, solely for offline Gate 1/2 diagnostic inspection in an isolated folder.
+The **original Gate 1/2 inspection kit** distributes five selected, unmodified text files from the private TAC-V2/A2 source reference commit, solely for offline Gate 1/2 diagnostic inspection in an isolated folder. A separate user-requested original D1 public download kit is also provided below.
 
 **Source reference:** `629c7ca50031a585cb7efe3c0795485314fb93be` on `tac-full-live-v1`. The copies' Git blob SHA-1 identifiers were checked against that source and are recorded in `FILE_INTEGRITY.json` together with SHA-256 hashes of their bytes.
 
-## Download as ZIP
+## Additional: TAC AI Pro original D1 download kit\n\nThe separate [verified 91-source and D1 download area](downloads/ai-pro-d1-original-20261023/README.md) provides a self-contained historical source reference, single-file D1 CanonicalBar source, and SHA-256 checksums. It is not a live strategy or a Gate 1/2 authority package.\n\n## Download as ZIP
 
 Use **Code → Download ZIP** or the public [main branch ZIP](https://github.com/411244050-beep/tac-v2-a2-gate12-download/archive/refs/heads/main.zip). GitHub generates the ZIP, so its outer ZIP SHA-256 **differs** from the original 13 KB chat attachment. Verify the extracted source files against `SHA256SUMS.txt` instead.
 
