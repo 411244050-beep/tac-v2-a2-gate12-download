@@ -1,0 +1,48 @@
+name: TAC frozen B4 current strategy SHA-gated install and AST protection
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/APPLY_FROZEN_B4_SOURCE_V1.py'
+      - '.github/workflows/tac-ai-pro-frozen-b4-current-source-install-v1.yml'
+permissions:
+  contents: read
+jobs:
+  verify_original_science_install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify SHA guard original scientific source identity and backup path in isolated test
+        run: |
+          python - <<'PY'
+          import hashlib,importlib.util,tempfile
+          from pathlib import Path
+          root=Path('downloads/ai-pro-native-core-20261105/native_candidate_v1')
+          path=root/'APPLY_FROZEN_B4_SOURCE_V1.py'
+          spec=importlib.util.spec_from_file_location('b4_current_installer',path)
+          m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+          with tempfile.TemporaryDirectory() as td:
+              s=Path(td)/'strategy.py'
+              s.write_text((root/'strategy/strategy.py').read_text()+'\n'+
+                  (root/'RUNTIME_B3_FROZEN_ORIGINAL_PRODUCER_APPEND_V1.py').read_text()+'\n'+
+                  (root/'RUNTIME_B3_TO_ORIGINAL_D3_UPDATE007_BRIDGE_V1.py').read_text())
+              orig=s.read_bytes()
+              b4=root/'B4_FROZEN_ORIGINAL_PRODUCER_APPEND_V1.py'
+              try:m.prepare(s,b4)
+              except ValueError as e:assert 'CURRENT_NATIVE_SOURCE_SHA_CHANGED' in str(e)
+              else:raise AssertionError('Unauthorized source bypassed SHA guard')
+              combined,meta=m.prepare(s,b4,pinned=hashlib.sha256(orig).hexdigest())
+              assert meta['B4_producer_definitions_appended']
+              assert meta['existing_original_science_AST_unchanged']
+              assert meta['B4_bound_to_native_D3_cutoff'] is False
+              assert meta['orders']==0 and meta['TAC_LIVE_ENABLED']==0
+              assert hashlib.sha256(combined).hexdigest()==meta['source_after_sha256']
+              assert s.read_bytes()==orig
+          print('TAC_FROZEN_B4_SHA_GATED_INSTALL_AST_PASS',meta['source_after_sha256'])
+          PY
