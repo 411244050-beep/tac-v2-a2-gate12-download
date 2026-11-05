@@ -1,0 +1,59 @@
+name: TAC safe QBU B5 native source installer SHA and original AST
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/APPLY_FROZEN_QBU_B5_SOURCE_V1.py'
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/QBU_B5_ORIGINAL_EVIDENCE_CUTOFF_BINDING_V1.py'
+      - '.github/workflows/tac-ai-pro-original-qbu-b5-installer-v1.yml'
+permissions:
+  contents: read
+jobs:
+  source_integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify the source SHA gate rejects unapproved baseline and preserves D1 B3 B4 AST
+        run: |
+          python - <<'PY'
+          import hashlib,importlib.util,tempfile
+          from pathlib import Path
+          root=Path('downloads/ai-pro-native-core-20261105/native_candidate_v1')
+          p=root/'APPLY_FROZEN_QBU_B5_SOURCE_V1.py'
+          spec=importlib.util.spec_from_file_location('tac_qbu_installer_test',p)
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+          original=(root/'strategy/strategy.py').read_text()+'\n'+(
+             root/'RUNTIME_B3_FROZEN_ORIGINAL_PRODUCER_APPEND_V1.py').read_text()+'\n'+(
+             root/'RUNTIME_B3_TO_ORIGINAL_D3_UPDATE007_BRIDGE_V1.py').read_text()+'\n'+(
+             root/'B4_FROZEN_ORIGINAL_PRODUCER_APPEND_V1.py').read_text()
+          with tempfile.TemporaryDirectory() as td:
+            f=Path(td)/'strategy.py'
+            f.write_text(original)
+            before=f.read_bytes()
+            qbu=root/'QBU_B5_FROZEN_NAMESPACED_ORIGINAL_APPEND_V1.py'
+            bridge=root/'QBU_B5_ORIGINAL_EVIDENCE_CUTOFF_BINDING_V1.py'
+            try:
+              mod.prepare(f,qbu,bridge)
+            except ValueError as e:
+              assert 'NATIVE_CURRENT_SOURCE_SHA_MISMATCH_ABORT_NO_WRITE' in str(e)
+            else:
+              raise AssertionError('unapproved source incorrectly passed sha gate')
+            merged,report=mod.prepare(f,qbu,bridge,
+               expected=hashlib.sha256(before).hexdigest())
+            assert report['scientific_prior_AST_unchanged']
+            assert report['frozen_original_QBU_B5_producer_definitions_installed']
+            assert report['QBU_B5_native_D3_cutoff_bound'] is False
+            assert report['orders']==0
+            assert report['TAC_LIVE_ENABLED']==0
+            assert f.read_bytes()==before
+            assert len(merged)>len(before)+80000
+            assert hashlib.sha256(merged).hexdigest()==report['source_after_sha256']
+            print('TAC_QBU_B5_ORIGINAL_SHA_GATED_SOURCE_APPEND_PASS',len(merged))
+          PY
