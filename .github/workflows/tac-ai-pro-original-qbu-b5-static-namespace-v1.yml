@@ -1,0 +1,39 @@
+name: TAC Original QBU Identity Minor Progress B5 Namespaced Source Build
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/build_frozen_qbu_namespace_v1.py'
+      - '.github/workflows/tac-ai-pro-original-qbu-b5-static-namespace-v1.yml'
+permissions:
+  contents: write
+jobs:
+  original_namespaced_science:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TAC_LIVE_ENABLED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Exact frozen source digest, science AST, collision and Python compile
+        run: |
+          test "$TAC_LIVE_ENABLED" = "0"
+          python downloads/ai-pro-native-core-20261105/native_candidate_v1/build_frozen_qbu_namespace_v1.py
+      - name: Commit nontrading original namespace source artifact and manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add downloads/ai-pro-native-core-20261105/native_candidate_v1/QBU_B5_FROZEN_NAMESPACED_ORIGINAL_APPEND_V1.py
+          git add downloads/ai-pro-native-core-20261105/native_candidate_v1/QBU_B5_FROZEN_NAMESPACED_ORIGINAL_APPEND_V1.manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "build(ai-pro-native): frozen QBU identity Minor B5 namespaced original sources"
+            git push origin HEAD:main
+          fi
