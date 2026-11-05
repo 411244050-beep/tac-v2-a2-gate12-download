@@ -270,5 +270,58 @@ class OriginalFrozenQBUParity(unittest.TestCase):
                          output.roles is None,memory is None))
         self.assertEqual(got[0],got[1])
 
+
+    def test_original_synthetic_QBU_B5_cutoff_evidence_pipeline(self):
+        m=self.flat
+        path=HERE/"QBU_B5_ORIGINAL_EVIDENCE_CUTOFF_BINDING_V1.py"
+        exec(compile(path.read_text(),"QBU_B5_ORIGINAL_EVIDENCE_CUTOFF_BINDING_V1.py","exec"),
+             vars(m))
+        d2minor=(pivot(m,"H0",100,15),pivot(m,"H1",120,30))
+        facts={
+          "mode":"SYNTHETIC_TEST_ONLY_FULL_SOURCE",
+          "history_complete":True,
+          "provenance_complete":True,
+          "same_cutoff_order_proven":True,
+          "continuity_intact":True,
+          "real_epoch_authorized":False,
+          "synthetic_coverage_ref":"FULL-SYNTHETIC-TEST",
+          "actual_rearm_predecessor_by_event_id":{}}
+        def invoke(rec,minor=d2minor,continuity=True):
+            return m._tac_original_qbu_b5_synthetic_cutoff_v1(
+                symbol="SYNTH",information_cutoff=30,
+                trend_episode_id="TE-1",direction=m.TrendDirection.LONG,
+                source_receipt=rec,
+                snapshots=(),candidates=(),
+                anchor_episodes=(episode(m),),
+                interaction_events=(evt(m),),
+                all_original_d2_minor=minor,
+                canonical_segment_id_by_anchor_episode_id={"A1":"SEG"},
+                continuity_by_candidate_id={"C1":continuity},
+                corridor=None,protected_price=None,protected_scale=None,
+                trend_episode_start_cutoff=1)
+        result=invoke(facts)
+        self.assertEqual(result["status"],"SYNTHETIC_ORIGINAL_QBU_B5_EVALUATED")
+        self.assertTrue(result["qbu_identity_bound"])
+        self.assertTrue(result["qbu_minor_progress_bound"])
+        self.assertTrue(result["b5_original_update008_bound"])
+        self.assertEqual(result["negotiation_identity_status"],"KNOWN")
+        self.assertEqual(result["minor_progress_status"],"TRUE")
+        self.assertFalse(result["entry_ready"])
+        self.assertEqual(result["orders"],0)
+        blocked=invoke({"mode":"REAL_PROSPECTIVE","history_complete":False})
+        self.assertEqual(blocked["status"],"BLOCKED_EPOCH_CONTINUITY_UNPROVEN")
+        self.assertFalse(blocked["producer_mutated"])
+        self.assertFalse(blocked["b5_original_update008_bound"])
+        not_full=invoke({**facts,"history_complete":False})
+        self.assertEqual(not_full["status"],"BLOCKED_EPOCH_CONTINUITY_UNPROVEN")
+        missing=invoke(facts,minor=(d2minor[1],))
+        self.assertEqual(missing["status"],"BLOCKED_QBU_MINOR_UNKNOWN")
+        cont=invoke(facts,continuity=None)
+        self.assertEqual(cont["status"],"BLOCKED_QBU_IDENTITY_UNKNOWN")
+        with self.assertRaisesRegex(ValueError,"FUTURE_MINOR_PIVOT_FORBIDDEN"):
+            invoke(facts,minor=d2minor+(pivot(m,"LATER",200,31),))
+        with self.assertRaisesRegex(ValueError,"ONLY_REAL_D2_15M_MINOR_PIVOTS_ALLOWED"):
+            invoke(facts,minor=(replace(d2minor[0],timeframe_ms=3600000),))
+
 if __name__=="__main__":
     unittest.main()
