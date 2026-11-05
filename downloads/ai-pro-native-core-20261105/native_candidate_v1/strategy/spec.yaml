@@ -1,0 +1,25 @@
+# Original-source TAC migration worktree candidate. No Paper/Live, no account.
+# SDK signature and code/spec validation must be performed in Binance AI Pro.
+# Only D1/D2 are wired to native data. D3–D6/F9/UPDATE014 are NOT yet native.
+strategy:
+  id: tac_original_d1d2_testonly_native_r0
+  version: "r0-source-candidate"
+trigger:
+  type: schedule
+  config:
+    interval: "15m"
+nodes:
+  - id: native_exact_15m_fetch
+    type: data
+    function: kline_stream
+    name: Prospective USD-M exact 15m closed Kline
+    params: []
+  - id: native_original_core_compute
+    type: custom
+    name: Original source D1+D2 exact structural computation all 528
+    code: |
+      return native_original_core_compute(exact_rows_by_symbol)
+    params: []
+edges:
+  - source: native_exact_15m_fetch
+    target: native_original_core_compute
