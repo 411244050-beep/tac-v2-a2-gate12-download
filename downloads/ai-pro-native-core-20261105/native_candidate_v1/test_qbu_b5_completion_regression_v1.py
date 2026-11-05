@@ -232,5 +232,29 @@ class FrozenQBUCompletionDifferential(unittest.TestCase):
         self.assertNotEqual(missing.get("minor_progress_status"),"TRUE")
         self.assertFalse(missing["entry_ready"])
 
+
+    def test_original_B5_unknown_diagnostic_retains_exact_source_reasons(self):
+        m=self.m
+        code=(HERE/"DIAGNOSE_ORIGINAL_QBU_B5_UNKNOWN_V1.py").read_text()
+        exec(compile(code,"DIAGNOSE_ORIGINAL_QBU_B5_UNKNOWN_V1.py","exec"),vars(m))
+        request=req_base(m,m.TAC_BASE_Update008Request,continuity=None)
+        output,next_memory=m.TAC_BASE_produce_update008(request)
+        record=m._tac_original_qbu_b5_unknown_diagnostic_v1(
+            original_request=request,original_output=output,
+            original_next_role_memory=next_memory,
+            source_mode="SYNTHETIC_TEST_ONLY")
+        self.assertEqual(record["status"],"BLOCKED_ORIGINAL_B5_UNKNOWN")
+        self.assertEqual(record["original_b5_state"],output.state.value)
+        self.assertEqual(record["original_b5_unknown_lineage_refs"],
+                         tuple(output.unknown_lineage_refs))
+        self.assertEqual(record["original_b5_conflict_lineage_refs"],
+                         tuple(output.conflict_lineage_refs))
+        self.assertEqual(record["input_available_snapshots"],0)
+        self.assertEqual(record["input_anchor_relinked_snapshots"],0)
+        self.assertEqual(record["input_material_minor_progress_records"],0)
+        self.assertFalse(record["is_mutating_original_science"])
+        self.assertFalse(record["entry_ready"])
+        self.assertEqual(record["orders"],0)
+
 if __name__=="__main__":
     unittest.main()
