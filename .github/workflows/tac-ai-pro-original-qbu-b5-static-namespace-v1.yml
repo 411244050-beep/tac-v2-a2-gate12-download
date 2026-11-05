@@ -5,6 +5,7 @@ on:
     paths:
       - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/build_frozen_qbu_namespace_v1.py'
       - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/test_frozen_qbu_namespaced_parity_v1.py'
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/test_qbu_b5_completion_regression_v1.py'
       - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/QBU_B5_ORIGINAL_EVIDENCE_CUTOFF_BINDING_V1.py'
       - '.github/workflows/tac-ai-pro-original-qbu-b5-static-namespace-v1.yml'
 permissions:
@@ -30,7 +31,7 @@ jobs:
       - name: Compare original standalone QBU/B5 production source against namespaced static source
         run: |
           cd downloads/ai-pro-native-core-20261105/native_candidate_v1
-          python -m unittest -v test_frozen_qbu_namespaced_parity_v1.py
+          python -m unittest -v test_frozen_qbu_namespaced_parity_v1.py test_qbu_b5_completion_regression_v1.py
       - name: Commit nontrading original namespace source artifact and manifest
         shell: bash
         run: |
