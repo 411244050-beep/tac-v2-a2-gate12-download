@@ -1,0 +1,55 @@
+name: TAC safe frozen B3 native code source installer AST audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/APPLY_RUNTIME_B3_SCIENCE_SAFE_V1.py'
+      - '.github/workflows/tac-ai-pro-safe-runtime-b3-installer-v1.yml'
+permissions:
+  contents: read
+jobs:
+  frozen_source_append_and_negative_guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Recheck source identity, frozen AST, exact preservation, wrong-SHA rejection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util,hashlib,ast
+          from pathlib import Path
+          root=Path('downloads/ai-pro-native-core-20261105/native_candidate_v1')
+          p=root/'APPLY_RUNTIME_B3_SCIENCE_SAFE_V1.py'
+          spec=importlib.util.spec_from_file_location('tac_safe_installer',p)
+          m=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(m)
+          base=root/'strategy/strategy.py'
+          producer=root/'RUNTIME_B3_FROZEN_ORIGINAL_PRODUCER_APPEND_V1.py'
+          bridge=root/'RUNTIME_B3_TO_ORIGINAL_D3_UPDATE007_BRIDGE_V1.py'
+          try:
+            m.prepare(base,producer,bridge)
+          except ValueError as exc:
+            assert 'CURRENT_NATIVE_BASELINE_SHA_CHANGED_STOP_NO_WRITE' in str(exc)
+          else:
+            raise AssertionError('baseline SHA gate was bypassed')
+          m.BASELINE=m.digest(base.read_bytes()) # isolated test override only
+          combined,receipt=m.prepare(base,producer,bridge)
+          assert receipt['original_definitions_unchanged'] is True
+          assert receipt['real_native_cutoff_B3_called'] is False
+          assert receipt['native_strategy_saved'] is False
+          assert receipt['TAC_LIVE_ENABLED']==0
+          assert receipt['orders']==0
+          assert len(combined)>len(base.read_bytes())+25000
+          assert hashlib.sha256(combined).hexdigest()==receipt['new_strategy_sha256']
+          assert len(ast.parse(combined.decode()).body)>len(ast.parse(base.read_text()).body)
+          assert base.read_bytes()!=combined
+          print('TAC_SAFE_FROZEN_B3_APPEND_AST_PASS',len(combined),
+                receipt['frozen_producer_ast_sha256'])
+          PY
