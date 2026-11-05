@@ -32,6 +32,14 @@ def names(tree):
                 if isinstance(t,ast.Name): out.add(t.id)
     return out
 
+def frozen_int_expression(node):
+    # Permit only frozen integer constants and exact multiplication.
+    if isinstance(node,ast.Constant) and type(node.value) is int:
+        return node.value
+    if isinstance(node,ast.BinOp) and isinstance(node.op,ast.Mult):
+        return frozen_int_expression(node.left)*frozen_int_expression(node.right)
+    raise ValueError("B4_UNSUPPORTED_OBSERVER_CONSTANT_EXPRESSION")
+
 def flatten_source():
     raw=ORIGINAL.read_bytes()
     if sha256(raw).hexdigest()!=FROZEN_SHA256:
@@ -61,11 +69,11 @@ def flatten_source():
             removed.append("types.MappingProxyType = identical_builtin_type")
             continue
         if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id=="OBSERVER_TIMEFRAME_MS" for t in node.targets):
-            if ast.literal_eval(node.value)!=900000:
+            if frozen_int_expression(node.value)!=900000:
                 raise ValueError("B4_OBSERVER_15M_CONSTANT_CHANGED")
             b3constant=next(n for n in b3.body
                 if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=="OBSERVER_TIMEFRAME_MS" for t in n.targets))
-            if ast.literal_eval(b3constant.value)!=900000:
+            if frozen_int_expression(b3constant.value)!=900000:
                 raise ValueError("ORIGINAL_B3_OBSERVER_MISMATCH")
             removed.append("duplicate frozen OBSERVER_TIMEFRAME_MS=900000")
             continue
