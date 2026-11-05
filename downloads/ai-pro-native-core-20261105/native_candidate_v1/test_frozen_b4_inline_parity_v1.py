@@ -165,5 +165,47 @@ class B4OriginalSourceDifferential(unittest.TestCase):
                 if outcome.state.value=="TRUE": self.assertTrue(cv.value)
                 else: self.assertIsNone(b.safe_b4_consumer(outcome))
 
+
+    def test_original_D2_D3_cutoff_binding_without_real_epoch_spoofing(self):
+        source=(HERE/"B4_ORIGINAL_D2_PIVOT_EVENT_BINDING_V1.py").read_text()
+        exec(compile(source,"B4_ORIGINAL_D2_PIVOT_EVENT_BINDING_V1.py","exec"),
+             vars(self.flat))
+        c=self.flat
+        req,rec=fixture(c,c)
+        bar=c.CanonicalBar.from_values(symbol="SYNTH",open_time=1800000000000,
+            close_time=1800000899999,open="100",high="102",low="94",
+            close="101")
+        receipt={
+            "mode":"SYNTHETIC_TEST_ONLY_FULL_SOURCE",
+            "complete":True,"same_cutoff_order_proven":True,
+            "canonical_continuity_intact":True,
+            "source_evidence_refs":("SRC",),
+            "canonical_segment_id":"SEG","market_event_id":"MKT",
+            "actual_prior_reclaim_cutoffs":()}
+        call=lambda b4_receipt:c._tac_original_b4_from_D2_D3_source_v1(
+            bar=bar,original_d3_event=req.interaction,
+            original_d2_minor_pivots=req.pivots,
+            source_receipt=b4_receipt,theta_progress=Fraction(1,2),
+            separation_origin_open_time=10,separation_cutoff=10,
+            attempt_origin_open_time=10,attempt_cutoff=10)
+        out=call(receipt)
+        self.assertTrue(out["original_B4_bound"])
+        self.assertEqual(out["structural_acceptance_state"],"TRUE")
+        self.assertEqual(out["correct_side_recovery_state"],"TRUE")
+        self.assertFalse(out["entry_ready"])
+        self.assertFalse(out["trade_authorized"])
+        self.assertEqual(out["orders"],0)
+        blocked=call({"mode":"REAL_PROSPECTIVE","complete":False})
+        self.assertEqual(blocked["status"],"BLOCKED_EPOCH_CONTINUITY_UNPROVEN")
+        self.assertFalse(blocked["original_B4_bound"])
+        self.assertIsNone(blocked["structural_acceptance"])
+        self.assertIsNone(blocked["correct_side_recovery"])
+        unknown=call({**receipt,"canonical_continuity_intact":False})
+        self.assertFalse(unknown["original_B4_bound"])
+        self.assertEqual(unknown["orders"],0)
+        bogus=call({**receipt,"source_evidence_refs":()})
+        self.assertFalse(bogus["original_B4_bound"])
+        self.assertEqual(bogus["orders"],0)
+
 if __name__=="__main__":
     unittest.main()
