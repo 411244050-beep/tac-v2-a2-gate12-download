@@ -71,7 +71,7 @@ class FrozenQBUCompletionDifferential(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.m,cls.original_base,cls.original_id,cls.original_minor=load()
-        code=(HERE/"QBU_B5_ORIGINAL_EVIDENCE_CUTOFF_BINDING_V1.py").read_text()
+        code=(HERE/"QBU_B5_ORIGINAL_EVIDENCE_CUTOFF_BINDING_V2.py").read_text()
         exec(compile(code,"QBU_B5_ORIGINAL_EVIDENCE_CUTOFF_BINDING_V1.py","exec"),
              vars(cls.m))
 
@@ -84,6 +84,10 @@ class FrozenQBUCompletionDifferential(unittest.TestCase):
         self.assertEqual(result["negotiation_identity_status"],"KNOWN")
         self.assertEqual(result["B5_state"],"TRUE")
         self.assertEqual(len(result["original_qbus"]),1)
+        self.assertEqual(len(result["original_updated_anchor_episodes"]),1)
+        self.assertEqual(len(result["original_updated_anchor_episodes"][0].qualified_uses),1)
+        self.assertEqual(result["original_minor_progress_record_count"],1)
+        self.assertEqual(result["original_material_minor_progress_record_count"],1)
         self.assertEqual(len(result["original_boundaries"]),1)
         self.assertIsNotNone(result["original_roles"])
         self.assertIsNotNone(result["original_roles"].primary_unit_id)
@@ -188,7 +192,7 @@ class FrozenQBUCompletionDifferential(unittest.TestCase):
                     canonical_segment_id="SEG",continuity_intact=True),))
         first_out,_=m.TAC_BASE_produce_update008(orig_req)
         second_req=replace(orig_req,
-            information_cutoff=31,episodes=first_out.episodes)
+            information_cutoff=31,episodes=first["original_updated_anchor_episodes"])
         second,mem2=m.TAC_BASE_produce_update008(second_req,prior_memory=mem)
         self.assertFalse(second.produced_qbus)
         self.assertIsNotNone(second.roles)
@@ -212,6 +216,7 @@ class FrozenQBUCompletionDifferential(unittest.TestCase):
         # This is NOT a positive material progress record, and yields NO QBU.
         self.assertEqual(out["minor_progress_status"],"TRUE")
         self.assertFalse(out.get("original_qbus",()))
+        self.assertEqual(out["original_minor_progress_record_count"],0)
         self.assertTrue(out.get("original_roles") is None or
                         out["original_roles"].primary_unit_id is None)
         # Terminal cutoff must arise from actual D2 state; a passed integer
