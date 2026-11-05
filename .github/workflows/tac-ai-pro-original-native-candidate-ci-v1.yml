@@ -1,0 +1,105 @@
+name: Verify actual TAC native strategy.py and spec.yaml source candidate
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/strategy/strategy.py'
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/strategy/spec.yaml'
+      - '.github/workflows/tac-ai-pro-original-native-candidate-ci-v1.yml'
+permissions:
+  contents: read
+jobs:
+  compile_and_original_D1D2_without_trade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      TAC_LIVE_ENABLED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Compile public strategy.py and prove original-source prefix matches pinned original package
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,zipfile,json
+          root=Path('downloads/ai-pro-native-core-20261105')
+          source=(root/'native_candidate_v1/strategy/strategy.py').read_text()
+          target=(root/'native_candidate_v1/strategy/spec.yaml').read_text()
+          with zipfile.ZipFile(root/'TAC_AI_PRO_NATIVE_CORE_SOURCE_UPLOAD_V1.zip') as z:
+              orig=z.read('work/ai_pro_port_inactive/native_core_reset_v1/source/original_d1_to_d6_f9_source.py')
+              meta=json.loads(z.read('MANIFEST_SHA256.json'))
+              assert meta['original_core_sha256']=='a3c8af708d29c82afe7bd89f04f9434838bb1bfdea95936791d5bf33b28aa708'
+              assert hashlib.sha256(orig).hexdigest()==meta['original_core_sha256']
+              assert source.startswith(orig.decode()),'original frozen source changed'
+          assert 'native_exact_15m_fetch' in target
+          assert 'native_original_core_compute' in target
+          assert 'native_exact_15m_fetch' in source
+          assert 'TAC_LIVE_ENABLED = 0' in source
+          assert 'NATIVE_528_PROSPECTIVE_STREAM_AUTHORIZED = False' in source
+          assert 'D3_D4_F9_D5_UPDATE014_D6' in source
+          compile(source,'strategy.py','exec')
+          print('PUBLIC_ORIGINAL_SOURCE_IDENTITY_AND_PYTHON_COMPILE_PASS',len(source))
+          PY
+      - name: Exercise real original D1 D2 300 closed 15m bars, reject float and forbid orders
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util,sys,types,asyncio
+          from pathlib import Path
+          for name in ('binance','binance.strategy','binance.strategy.runtime',
+                       'binance.strategy.node','binance.strategy.node.capabilities',
+                       'binance.strategy.node.capabilities.data'):
+              sys.modules[name]=types.ModuleType(name)
+          r=sys.modules['binance.strategy.runtime']
+          r.node=lambda x:lambda fn:fn
+          r.workflow=lambda fn:fn
+          r.ctx=types.SimpleNamespace(state={},exception=lambda err,reason:None)
+          sys.modules['binance.strategy.node.capabilities.data'].kline_stream=lambda **k:None
+          p=Path('downloads/ai-pro-native-core-20261105/native_candidate_v1/strategy/strategy.py')
+          spec=importlib.util.spec_from_file_location('tac_public_original_native_source',p)
+          c=importlib.util.module_from_spec(spec)
+          sys.modules[spec.name]=c
+          spec.loader.exec_module(c)
+          assert len(c.FROZEN_528_SYMBOLS)==528
+          assert len(set(c.FROZEN_528_SYMBOLS))==528
+          assert c.TAC_LIVE_ENABLED==0
+          assert not c.NATIVE_528_PROSPECTIVE_STREAM_AUTHORIZED
+          base=(1800000000000//900000)*900000
+          wave=(0,3,8,13,19,10,4,0,-5,-10,-16,-9,-4,0)
+          rows=[]
+          for i in range(300):
+              close=1000+(i//100)*10+wave[i%len(wave)]
+              prior=close-1
+              t=base+i*900000
+              rows.append({'symbol':'BTCUSDT','open_time':t,'close_time':t+899999,
+                  'open':str(prior),'high':str(close+3),'low':str(close-4),
+                  'close':str(close),'base_volume':'2.5','quote_volume':'2500.0'})
+          x=c._replay_actual_original_d1d2('BTCUSDT',rows)
+          assert x['status']=='PASS_ORIGINAL_D1D2_ONLY'
+          assert x['bars']==300 and x['atr14_kind']=='KNOWN'
+          assert x['D2_minor_events']>=0
+          assert x['D3']=='BLOCKED_NOT_YET_BOUND'
+          assert x['entry_ready'] is False
+          data={'s':'BTCUSDT','k':{
+              's':'BTCUSDT','t':base,'T':base+899999,'x':True,
+              'o':'1000.0','h':'1010.0','l':'990.0','c':'1002.0',
+              'v':'2.5','q':'2500.0'}}
+          assert c._native_exact_closed_kline(data,'BTCUSDT')['close']=='1002.0'
+          data['k']['c']=1002.0
+          try:c._native_exact_closed_kline(data,'BTCUSDT')
+          except ValueError as exc:assert 'FLOAT_FORBIDDEN' in str(exc)
+          else:raise AssertionError('raw float incorrectly admitted')
+          blocked=asyncio.run(c.original_tac_testonly_workflow())
+          assert blocked['status']=='BLOCKED_NATIVE_STREAM_NOT_YET_VALIDATED'
+          assert blocked['orders']==0
+          print('ACTUAL_ORIGINAL_D1D2_PYTHON_PARITY_SMOKE_PASS',x['bars'],
+                '528 untouched, 0 orders, D3-D6 not bound')
+          PY
