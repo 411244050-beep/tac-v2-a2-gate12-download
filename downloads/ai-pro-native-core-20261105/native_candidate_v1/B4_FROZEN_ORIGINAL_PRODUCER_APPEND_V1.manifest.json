@@ -1,0 +1,25 @@
+{
+  "B4_native_node_connected": false,
+  "B4_true_evidence_eligible_to_trade": false,
+  "QBU_B5_D4_F9_D5_UPDATE014_D6_native_connected": false,
+  "TAC_LIVE_ENABLED": 0,
+  "appended_chars": 28342,
+  "appended_sha256": "88b588848bad8661078ac8e928b50e49060dcb0389a0104709442e4b151984ba",
+  "imports_or_duplicate_constant_normalized": [
+    "future annotations",
+    "types.MappingProxyType = identical_builtin_type",
+    "strategy_rc1.strategy_rc1.d2_market_state.progress",
+    "strategy_rc1.strategy_rc1.d2_market_state.types",
+    "strategy_rc1.strategy_rc1.d3_boundary_intelligence.types",
+    "strategy_rc1.strategy_rc1.d4_opportunity.types",
+    "strategy_rc1.strategy_rc1.runtime_guards.information_state",
+    "duplicate frozen OBSERVER_TIMEFRAME_MS=900000"
+  ],
+  "orders": 0,
+  "original_d1d2d3d4d5d6_f9_definitions_preserved": true,
+  "original_definitions_ast_unchanged": true,
+  "runtime_b3_original_definitions_preserved": true,
+  "schema": "TAC_FROZEN_D2_TO_B4_ORIGINAL_PRODUCER_SINGLE_SOURCE_V1",
+  "source": "provisional_shadow_v1/d2_to_b4_d4_causal_evidence_producers_v1.py",
+  "source_sha256": "acdb9f7dcac5e4dee2cf012951c8c8eff51f59dcb9811304e833666bb0d8cdd3"
+}
