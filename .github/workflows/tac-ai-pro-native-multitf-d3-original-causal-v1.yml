@@ -1,0 +1,98 @@
+name: TAC original 15m 1h 4h D3 causal adapter zero-trade parity
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/D3_MULTITF_ORIGINAL_CAUSAL_PATCH_V1.py'
+      - '.github/workflows/tac-ai-pro-native-multitf-d3-original-causal-v1.yml'
+permissions:
+  contents: read
+jobs:
+  actual_original_science_paths:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    env:
+      TAC_LIVE_ENABLED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Verify exact published source and run actual original D1 D2 D3 D4 functions
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$TAC_LIVE_ENABLED" = "0"
+          python - <<'PY'
+          import sys,types,ast,hashlib
+          from pathlib import Path
+          root=Path('downloads/ai-pro-native-core-20261105/native_candidate_v1')
+          src=root/'strategy/strategy.py'
+          adapter=root/'D3_MULTITF_ORIGINAL_CAUSAL_PATCH_V1.py'
+          patch=adapter.read_bytes()
+          assert hashlib.sha256(patch).hexdigest()=='1fb81b14349e0dc081f10c9b4977c9b62abf000cb0026e2be32ebc981b6c7d7d'
+          original=src.read_text(encoding='utf8')
+          merged=original+'\n'+patch.decode()
+          t=ast.parse(original)
+          after=ast.parse(merged)
+          assert [ast.dump(x,include_attributes=False) for x in t.body]==[ast.dump(x,include_attributes=False) for x in after.body[:len(t.body)]]
+          compile(merged,'tac_native_d3_multitf_merge.py','exec')
+          for name in ('binance','binance.strategy','binance.strategy.runtime',
+                       'binance.strategy.node','binance.strategy.node.capabilities',
+                       'binance.strategy.node.capabilities.data'):
+              sys.modules[name]=types.ModuleType(name)
+          r=sys.modules['binance.strategy.runtime']
+          r.node=lambda nm:lambda fn:fn
+          r.workflow=lambda fn:fn
+          r.ctx=types.SimpleNamespace(state={},exception=lambda *a,**k:None)
+          sys.modules['binance.strategy.node.capabilities.data'].kline_stream=lambda **k:None
+          m=types.ModuleType('tac_original_multitf_ci');sys.modules[m.__name__]=m
+          exec(compile(merged,'tac_native_d3_multitf_merge.py','exec'),vars(m))
+          def rows(n):
+              wave=(0,8,18,30,44,30,18,8,0,-8,-16,-8)
+              out=[]
+              for i in range(n):
+                  close=1000+2*i+wave[i%len(wave)]
+                  prev=1000+2*(i-1)+wave[(i-1)%len(wave)] if i else close
+                  ts=1800000000000+i*900000
+                  out.append({'symbol':'BTCUSDT','is_closed':True,'open_time':ts,
+                   'close_time':ts+899999,'open':str(prev),
+                   'high':str(max(close,prev)+2),'low':str(min(close,prev)-2),
+                   'close':str(close),'base_volume':'100.123',
+                   'quote_volume':'12345.678'})
+              return out
+          r=m._tac_original_multitf_d3_testonly('BTCUSDT',rows(400))
+          c=r['counts']
+          assert [c[x] for x in ('15m_completed_bars','1h_completed_bars',
+                                 '4h_completed_bars')]==[400,100,25],c
+          assert [c[x] for x in ('candidate_snapshots_15m','candidate_snapshots_1h',
+                                 'candidate_snapshots_4h')]==[1055,208,10],c
+          assert [c[x] for x in ('geometry_15m','geometry_1h','geometry_4h')]==[1052,820,128],c
+          assert c['geometry_calls']==c['update007_calls']==c['update008_calls']==2000
+          assert c['d4_no_mechanism_diagnostic_calls']==351
+          assert c['anchor_episodes']==0 and c['d4_authenticated_market_events']==0
+          assert r['D4']=='NO_MECHANISM_DIAGNOSTIC_ONLY_NO_ENTRY_SIGNAL'
+          assert not r['entry_ready'] and not r['trade_authorized'] and not r['orders']
+          for n,one,four in ((3,0,0),(4,1,0),(15,3,0),(16,4,1)):
+              o=m._tac_original_multitf_d3_testonly('BTCUSDT',rows(n))
+              assert (o['counts']['1h_completed_bars'],
+                      o['counts']['4h_completed_bars'])==(one,four)
+          invalid=rows(3);invalid[0].pop('is_closed')
+          try:m._tac_original_multitf_d3_testonly('BTCUSDT',invalid)
+          except ValueError as e:assert 'CLOSED_BAR_REQUIRED' in str(e)
+          else:raise AssertionError('missing closed marker admitted')
+          invalid=rows(12);del invalid[5]
+          try:m._tac_original_multitf_d3_testonly('BTCUSDT',invalid)
+          except ValueError as e:assert 'SOURCE_CONTINUITY_BLOCKED' in str(e)
+          else:raise AssertionError('15m gap admitted')
+          m.TAC_LIVE_ENABLED=1
+          try:m._tac_original_multitf_d3_testonly('BTCUSDT',rows(1))
+          except ValueError as e:assert 'TEST_ONLY' in str(e)
+          else:raise AssertionError('trade mode admitted')
+          finally:m.TAC_LIVE_ENABLED=0
+          print('TAC_ORIGINAL_D3_MULTI_TF_SOURCE_PASS',c,
+                'original AST identical; D4 no-mechanism fail-closed; 0 trading')
+          PY
