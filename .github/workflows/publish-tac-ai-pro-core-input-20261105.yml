@@ -1,0 +1,69 @@
+name: Publish verified TAC original-source input ZIP to public download area
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-tac-ai-pro-core-input-20261105.yml'
+permissions:
+  contents: write
+jobs:
+  publish_verified_zip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    env:
+      SOURCE_URL: "https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-1d90-8206-b335-19cbafe86b76/raw?se=2026-11-05T11%3A04%3A24Z&sp=r&sv=2026-02-06&sr=b&scid=b050a732-b151-5d9f-a2a9-c6c611838bce&skoid=3e273c3d-5ea1-4088-9e18-79685531b184&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-05T04%3A05%3A22Z&ske=2026-11-06T04%3A05%3A22Z&sks=b&skv=2026-02-06&sig=APUbkpXfxQyyFQP6eW7gMpqxdHm/r8uvkLhtF/7/HOc%3D"
+      EXPECTED_SHA256: 25b969f1ed50c07798fe72f2eb4213011bde824677d5f2c0fdb25fe0f41efe7c
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Fetch privately compiled and verified source-only ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p downloads/ai-pro-native-core-20261105
+          curl --fail --silent --show-error --location --max-time 65 "${SOURCE_URL}" -o downloads/ai-pro-native-core-20261105/TAC_AI_PRO_NATIVE_CORE_SOURCE_UPLOAD_V1.zip
+          echo "${EXPECTED_SHA256}  downloads/ai-pro-native-core-20261105/TAC_AI_PRO_NATIVE_CORE_SOURCE_UPLOAD_V1.zip" | sha256sum --check
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile,json,hashlib
+          p=Path('downloads/ai-pro-native-core-20261105/TAC_AI_PRO_NATIVE_CORE_SOURCE_UPLOAD_V1.zip')
+          with zipfile.ZipFile(p) as z:
+            if z.testzip() is not None:
+              raise RuntimeError('ZIP_CRC_FAILED')
+            manifest=json.loads(z.read('MANIFEST_SHA256.json'))
+            assert len(manifest['files'])==106 and manifest['file_count']==106
+            assert manifest['frozen_universe_count']==528
+            assert manifest['formal_D5_frozen_slots']==10
+            for row in manifest['files']:
+              assert hashlib.sha256(z.read(row['path'])).hexdigest()==row['sha256'],row['path']
+            assert not manifest['platform_native_executed']
+            assert manifest['TAC_LIVE_ENABLED']==0
+            assert manifest['orders']==0
+          print('PUBLIC_ZIP_VERIFIED',p.stat().st_size,'bytes; 106 files; 528 symbols; 10 D5 slots')
+          PY
+      - name: Publish public ZIP and README in same commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > downloads/ai-pro-native-core-20261105/README.md <<'EOF'
+          # TAC original core → Binance AI Pro (native migration input, 2026-11-05)
+
+          [Direct public ZIP download](./TAC_AI_PRO_NATIVE_CORE_SOURCE_UPLOAD_V1.zip)
+
+          Raw ZIP (unauthenticated): https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/TAC_AI_PRO_NATIVE_CORE_SOURCE_UPLOAD_V1.zip
+
+          SHA-256: `25b969f1ed50c07798fe72f2eb4213011bde824677d5f2c0fdb25fe0f41efe7c`
+
+          This source-only package contains 106 verified files: the SHA-pinned original TAC D1–D6/F9 science reference, its frozen 91-file archive and module dependencies, the updated D5 ten-slot risk authority, UPDATE-014 final entry guard, the frozen ordered 528-symbol universe and validation manifests.
+
+          **It is input to build a Binance AI Pro native `strategy/strategy.py` and `strategy/spec.yaml`, NOT a saved/deployed/running strategy.** The main source is over 60k characters; Binance AI Pro must perform rule-preserving refactoring and actual native validation/audit. Do not invent missing parameters or replace the core logic with EMA/ATR/SuperTrend voting. Only user-approved signal-only, no-account, no-orders verification is in scope. `TAC_LIVE_ENABLED=0`.
+
+          This public download is intentionally available without GitHub login. No API keys or account contents are included.
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add downloads/ai-pro-native-core-20261105/TAC_AI_PRO_NATIVE_CORE_SOURCE_UPLOAD_V1.zip downloads/ai-pro-native-core-20261105/README.md
+          git diff --cached --quiet && exit 0
+          git commit -m "release(public-download): original TAC AI Pro native migration full input bundle (106 verified files)"
+          git push origin HEAD:main
