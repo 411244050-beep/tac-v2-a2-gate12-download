@@ -16,7 +16,7 @@ The original B5 source **does not directly construct** the RoleAssignment transi
 
 Original source proofs:
 - Original B5 (Git Blob 97a02f5584c1446ca5ae016bad383e3ed0e18bb5):
-https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/original_d4_dependencies_20261106/authoritative_d3_b5_d4_base_runtime_producers_v1.py
+https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/frozen_evidence_producers_v1/authoritative_d3_b5_d4_base_runtime_producers_v1.py
 - Original frozen 91-file WP8 package with strategy_rc1/d3_boundary_intelligence/clusters_roles.py and types.py:
 https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/wp8_strategy_rc1_full_original_20261106/README_RECOVERY_HANDOFF.md
 - Original pure-WATCH coordinator (Git Blob 074a2b08a7aec6b2c51431a5ccadcc0aa75e0ebb):
