@@ -5,6 +5,8 @@ on:
     paths:
       - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/test_b3_d3_rearm_gap_source_only_v1.py'
       - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/test_b3_d3_rearm_short_atomic_contract_v1.py'
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/B3_REARM_INDEPENDENT_CYCLE_STAGE_TEST_ONLY_V1.py'
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/test_b3_rearm_independent_cycle_stage_v1.py'
       - '.github/workflows/tac-b3-d3-rearm-gap-source-only-v1.yml'
   workflow_dispatch:
 permissions:
@@ -29,4 +31,4 @@ jobs:
           set -euo pipefail
           test "$TAC_LIVE_ENABLED" = "0"
           cd downloads/ai-pro-native-core-20261105/native_candidate_v1
-          python -m unittest -v test_b3_d3_rearm_gap_source_only_v1.py test_b3_d3_rearm_short_atomic_contract_v1.py
+          python -m unittest -v test_b3_d3_rearm_gap_source_only_v1.py test_b3_d3_rearm_short_atomic_contract_v1.py test_b3_rearm_independent_cycle_stage_v1.py
