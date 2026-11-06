@@ -1,9 +1,9 @@
 # TAC / Binance AI Pro — B3 independent-cycle rearm adapter binding PROPOSAL V1
 Date: 2026-11-06
 
-**STATUS: PROPOSED ENGINEERING BINDING — NOT ORIGINAL FROZEN AUTHORITY; NOT APPROVED FOR NATIVE MERGE OR LIVE USE.**
+**STATUS: USER-APPROVED FOR ISOLATED TEST_ONLY ENGINEERING EXPERIMENTS (2026-11-06) — NOT ORIGINAL FROZEN AUTHORITY; NOT APPROVED FOR NATIVE MERGE, DURABLE PRODUCTION OR LIVE USE.**
 
-This decision packet resolves the **technical definition** of the missing B3 mapping but does **not** assert that the original frozen D3/B3 contracts already authorized it. Owner review is required before this new engineering-level binding can govern even a staged native patch. If approval is not granted, keep `BLOCKED_REARM_B3_BINDING_AUTHORITY_MISSING`.
+This decision packet resolves the **technical definition** of the missing B3 mapping but does **not** assert that the original frozen D3/B3 contracts already authorized it. The user authorized **isolated TEST_ONLY experimentation** on 2026-11-06. Production adoption and joint durable state are still separately unproven; outside isolated experiments, keep `BLOCKED_REARM_B3_BINDING_AUTHORITY_MISSING` or `BLOCKED_D3_B3_JOINT_PERSISTENCE` as appropriate.
 
 ## Sources and evidence
 
@@ -33,7 +33,7 @@ R4. Verify frozen B3 `pending_state(symbol,candidate_id) is None` from restored 
 
 R5. **Only after formal acceptance of this engineering mapping**, construct one B3 observation for `NEW_CYCLE_PRE_ARM` using the actual current authenticated bar, snapshot, geometry, D2 direction and candidate, with B3 producer's `interaction_control=UNARMED`. This is an observation of the *new independent cycle's pre-state*, not an assertion about the old D3 event. Do not mutate actual `before.control`.
 
-R6. Execute one frozen B3 `process_batch` in a **restored, isolated staged producer**, with a single deterministic transaction ID bound to candidate, cutoff, canonical segment, source digest, new event ID and contract ID. Require reason `ARMED_FROZEN_CURRENT_CUTOFF_NO_RETURN`, no return evidence, pending at the exact cutoff, bar Close, arming snapshot/source_scale, trend ID, direction, segment. Failure => no adoption.
+R6. Execute one frozen B3 `process_batch` in a **restored, isolated staged producer**, with a single deterministic transaction ID bound to candidate, cutoff, canonical segment, new event ID and contract ID; **exclude mutable source digest from the transaction ID**, but record it separately in the original frozen B3 input digest and joint receipt so same identity/different input rejects. Require reason `ARMED_FROZEN_CURRENT_CUTOFF_NO_RETURN`, no return evidence, pending at the exact cutoff, bar Close, arming snapshot/source_scale, trend ID, direction, segment. Failure => no adoption.
 
 R7. Invoke the **original D3** `update_007_interaction_break` exactly once on the **original prior event state**, with no eligible return from the current arming bar, and check D3's actual result exactly equals the unmutated preprojection `projected` (event ID, control, cutoff, provenance). No synthetic D3 event construction or custom scientific transition.
 
@@ -72,10 +72,16 @@ if before.control is RESOLVED:
 
 ## Acceptance and blockers
 
-T1. Existing old and new source-only LONG/SHORT fixture results: 9/9 PASS as independent source-bound proof only.
+T1. Existing old and new source-only LONG/SHORT fixture results: [35/35 PASS including inherited regressions](https://github.com/411244050-beep/tac-v2-a2-gate12-download/actions/runs/42164754734) as independent source-bound proof only; also includes staged second-cycle return and interaction tests. This is not native Binance acceptance.
 T2. Current 473KB Binance main cutoff node under an **isolated code copy**, with full TEST_ONLY LONG/SHORT and legal/conflicting rearm + B3 pending + return later cutoff: **NOT RUN**.
 T3. Combined state commit crash injection and cold restart on actual Binance storage: **NOT RUN**.
 T4. Original output differential, QBU Episode/RoleMemory/Primary actual main-loop positive, D2 terminal provenance: **NOT RUN / BLOCKED**.
 T5. Native `validate_code`, `validate_spec` after hypothetical patch: **NOT RUN**.
 
 Before authorizing any native code merge, preserve the verified 473KB baseline or provide provable rollback. Never present this engineering mapping as original frozen science. Preserve original B3/B4/QBU functions and 528 universe, `TAC_LIVE_ENABLED=0`, subscriptions off; no account, orders, Paper/Live, or execution.
+
+## TEST_ONLY implementation and native acceptance handoff (2026-11-06)
+
+- [Staged adapter source](https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/native_candidate_v1/B3_REARM_INDEPENDENT_CYCLE_STAGE_TEST_ONLY_V1.py)
+- [Staged LONG/SHORT tests](https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/native_candidate_v1/test_b3_rearm_independent_cycle_stage_v1.py)
+- [Exact Binance isolated acceptance handoff](https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/native_candidate_v1/B3_REARM_NATIVE_ISOLATED_ACCEPTANCE_HANDOFF_20261106.md)
