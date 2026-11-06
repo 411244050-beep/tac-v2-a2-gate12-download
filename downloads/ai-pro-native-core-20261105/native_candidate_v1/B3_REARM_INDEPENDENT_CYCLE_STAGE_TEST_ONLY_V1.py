@@ -84,6 +84,10 @@ def _tac_b3_rearm_new_cycle_stage_test_only_v1(
     if len(matching) != 1 or matching[0].snapshot_id != snapshot.snapshot_id:
         raise ValueError("B3_REARM_PREBAR_SNAPSHOT_LINEAGE_MISMATCH")
 
+    original_geometry = d3.update_002_capture_geometry(bar=bar, information_cutoff=bar.close_time, snapshot=snapshot)
+    if original_geometry != geometry:
+        raise ValueError("B3_REARM_GEOMETRY_ORIGIN_MISMATCH")
+
     before = d3.current_event(candidate.candidate_id)
     if (
         before.control is not InteractionControl.RESOLVED
