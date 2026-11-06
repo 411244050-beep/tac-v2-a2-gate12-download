@@ -152,11 +152,10 @@ class _OriginalConsumerWatchProbe(_AnchorMembershipCase):
         with self.assertRaisesRegex(ValueError,"event/candidate mismatch"):
             self.m.bind_event_to_episode(
                 replace(watch,candidate_id="OTHER_CANDIDATE"),ep)
-        altered=replace(ep,interaction_event_ids=(
+        altered=replace(ep,interaction_event_ids=tuple(
             x for x in ep.interaction_event_ids if x != watch.event_id
         ))
-        # The literal tuple is required; a generator is invalid provenance.
-        self.assertNotIn(watch.event_id,tuple(altered.interaction_event_ids))
+        self.assertNotIn(watch.event_id,altered.interaction_event_ids)
         self.assertEqual(watch.provenance["prior_event_id"],prior.event_id)
 
 
