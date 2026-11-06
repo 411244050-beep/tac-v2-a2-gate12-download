@@ -17,7 +17,7 @@ Already established, per LONG/SHORT direction:
 
 ## Verified frozen D3 code source causal diagnosis
 
-In original source `strategy_rc1/d3_boundary_intelligence/orchestration.py` / flattened older public `strategy/strategy.py`:
+In frozen original `work/ai_pro_port_inactive/wp8_reference_91_v1/strategy_rc1/d3_reference.py` and flattened older public `strategy/strategy.py`:
 - Original `D3ReferenceSkeleton.update_007_interaction_break` attaches a new `D3-INTERACTION` member ID to an existing `AnchorEpisode.interaction_event_ids` using original `attach_interaction`.
 - Original `update_008_anchor_lifecycle` returns existing non-terminated episode early; `bind_event_to_episode(event,episode)` only runs when an episode starts or restarts. Therefore an existing Episode may hold later interaction E2 membership, while the *new E2 event record* still has `anchor_episode_id=None`.
 - This is reciprocal source-binding/engineering-projection incompleteness, not permission to manufacture an Anchor Episode. No original scientific callable may be changed.
