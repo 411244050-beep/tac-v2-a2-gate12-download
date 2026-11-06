@@ -1,0 +1,32 @@
+name: TAC frozen D3 QBU reciprocal Anchor membership TEST_ONLY
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/QBU_ANCHOR_MEMBERSHIP_VIEW_TEST_ONLY_V1.py'
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/test_qbu_anchor_membership_view_test_only_v1.py'
+      - '.github/workflows/tac-qbu-anchor-membership-view-testonly-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reciprocal_anchor_link:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TAC_LIVE_ENABLED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Run frozen original two-cycle test-only view
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$TAC_LIVE_ENABLED" = "0"
+          cd downloads/ai-pro-native-core-20261105/native_candidate_v1
+          python -m unittest -v test_qbu_anchor_membership_view_test_only_v1.py
