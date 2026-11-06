@@ -27,6 +27,7 @@ class _AnchorMembershipCase(_StagedRearmCase):
         self._original_four()
         prior = self.d3.current_event(self.cand.candidate_id)
         bar, snapshot, geometry, staged = self._stage()
+        self._rearm_event = staged["event"]
         stage_d3 = staged["staged_d3"]
         stage_b3 = staged["staged_b3"]
         rows = []
@@ -50,16 +51,16 @@ class _AnchorMembershipCase(_StagedRearmCase):
         prior, latest, episode, cutoff, original_d3 = self._original_two_cycles()
         before_event = original_d3.current_event(self.cand.candidate_id)
         view = self.m._tac_qbu_anchor_membership_view_test_only_v1(
-            events=(prior, latest), episodes=(episode,),
+            events=(prior, self._rearm_event, latest), episodes=(episode,),
             information_cutoff=cutoff, history_complete=True,
         )
         self.assertEqual(view["bound_event_ids"], (latest.event_id,))
-        self.assertEqual(view["input_event_count"], 2)
-        self.assertEqual(view["distinct_event_ids"], 2)
+        self.assertEqual(view["input_event_count"], 3)
+        self.assertEqual(view["distinct_event_ids"], 3)
         self.assertEqual(view["orders"], 0)
         self.assertEqual(view["events"][0], prior)
         self.assertEqual(
-            view["events"][1],
+            view["events"][2],
             self.m.bind_event_to_episode(latest, episode)
         )
         self.assertEqual(view["events"][1].anchor_episode_id, episode.anchor_episode_id)
@@ -80,7 +81,7 @@ class _AnchorMembershipCase(_StagedRearmCase):
             )
             return self.m.TAC_ID_project_negotiation_identity(req)
 
-        before = project((prior,latest))
+        before = project((prior,self._rearm_event,latest))
         self.assertEqual(before.status, "UNKNOWN")
         self.assertIn("ANCHOR_EPISODE_UNKNOWN:"+latest.event_id, before.unknown_refs)
         after = project(view["events"])
@@ -96,7 +97,7 @@ class _AnchorMembershipCase(_StagedRearmCase):
         prior, latest, episode, cutoff, _ = self._original_two_cycles()
         altered = replace(episode,interaction_event_ids=(prior.event_id,))
         view = self.m._tac_qbu_anchor_membership_view_test_only_v1(
-            events=(prior, latest),episodes=(altered,),
+            events=(prior, self._rearm_event, latest),episodes=(altered,),
             information_cutoff=cutoff,history_complete=True
         )
         self.assertEqual(view["bound_event_ids"], ())
@@ -107,7 +108,7 @@ class _AnchorMembershipCase(_StagedRearmCase):
         conflicting = replace(latest, candidate_id="OTHER_CANDIDATE")
         with self.assertRaisesRegex(ValueError,"EPISODE_EVENT_LINEAGE_MISMATCH"):
             self.m._tac_qbu_anchor_membership_view_test_only_v1(
-                events=(prior,conflicting), episodes=(episode,),
+                events=(prior,self._rearm_event,conflicting), episodes=(episode,),
                 information_cutoff=cutoff, history_complete=True
             )
 
@@ -115,15 +116,15 @@ class _AnchorMembershipCase(_StagedRearmCase):
         prior, latest, episode, cutoff, _ = self._original_two_cycles()
         call = self.m._tac_qbu_anchor_membership_view_test_only_v1
         with self.assertRaisesRegex(ValueError,"FUTURE_EVENT_RESOLUTION"):
-            call(events=(prior,replace(latest,resolved_at=cutoff+1)),
+            call(events=(prior,self._rearm_event,replace(latest,resolved_at=cutoff+1)),
                  episodes=(episode,), information_cutoff=cutoff,
                  history_complete=True)
         with self.assertRaisesRegex(ValueError,"DIVERGENT_EVENT_ID"):
-            call(events=(prior, latest, replace(latest,resolved_at=cutoff-1)),
+            call(events=(prior, self._rearm_event, latest, replace(latest,resolved_at=cutoff-1)),
                  episodes=(episode,), information_cutoff=cutoff,
                  history_complete=True)
         with self.assertRaisesRegex(ValueError,"SOURCE_HISTORY_INCOMPLETE"):
-            call(events=(prior,latest),episodes=(episode,),
+            call(events=(prior,self._rearm_event,latest),episodes=(episode,),
                  information_cutoff=cutoff,history_complete=False)
 
 
