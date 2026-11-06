@@ -126,7 +126,7 @@ class _StagedRearmCase:
         )
         call = self.m._tac_b3_rearm_new_cycle_stage_test_only_v1
         with self.assertRaisesRegex(ValueError, "GEOMETRY_ORIGIN_MISMATCH"):
-            call(**dict(common, geometry=replace(geometry, separated=False)))
+            call(**dict(common, geometry=replace(geometry, d_close=geometry.d_close + Fraction(1))))
         with self.assertRaisesRegex(ValueError, "FULL_SOURCE_RECEIPT"):
             call(**dict(common, source_receipt={"mode": "SYNTHETIC_TEST_ONLY_FULL_SOURCE"}))
         with self.assertRaisesRegex(ValueError, "D2_TREND_MISMATCH"):
