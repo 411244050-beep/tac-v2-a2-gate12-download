@@ -1,0 +1,75 @@
+{
+  "schema": "TAC_PLATFORM_FAILED_REEXPANSION_EVENT_AND_STATE_PRODUCTION_BINDING_V1_FREEZE_MANIFEST",
+  "status": "FROZEN_DATA_BLIND_EXACT_VERIFICATION_PASS",
+  "authorization": "PLATFORM_FAILED_REEXPANSION_EVENT_AND_STATE_PRODUCTION_BINDING_DATA_BLIND_EXACT_VERIFICATION_V1",
+  "repository": "411244050-beep/tac-v2-a2-external-runtime",
+  "branch": "provisional-shadow-v1-synthetic-data-blind",
+  "verified_head": "68eba1995ff49f21751403bc1fa767be31fd2061",
+  "main_head": "443096b185ac535564f34d1977a34f282eb684e1",
+  "artifacts": {
+    "scientific_terminal": {
+      "path": "provisional_shadow_v1/platform_failed_reexpansion_source_association_scientific_convention_v1_terminal.json",
+      "blob": "e4bc0802dccaf7a1aa7c4ec6326484c084718270"
+    },
+    "scientific_contract": {
+      "path": "provisional_shadow_v1/platform_failed_reexpansion_source_association_scientific_convention_contract_v1.json",
+      "blob": "a1a003665ea3acf48a62db85903e033c7fc78e5b"
+    },
+    "production_binding": {
+      "path": "provisional_shadow_v1/platform_failed_reexpansion_event_and_state_production_binding_v1.py",
+      "blob": "0f114278eebb683c9090a476f6ece62fe12ed105"
+    },
+    "verifier": {
+      "path": "provisional_shadow_v1/test_platform_failed_reexpansion_event_and_state_production_binding_v1.py",
+      "blob": "33c29bc22d225ff8aed33690fd26737a50a1d2a4"
+    },
+    "workflow": {
+      "path": ".github/workflows/platform-failed-reexpansion-production-binding-v1-exact-verification.yml",
+      "blob": "52b1584116c2e6b2d03054efdac0f01c67d8fcfc"
+    },
+    "exact_verification": {
+      "path": "provisional_shadow_v1/platform_failed_reexpansion_event_and_state_production_binding_v1_exact_verification.json",
+      "blob": "fd89cc880b25a920ef4442d6cf8ef43d4ecae8d4"
+    },
+    "implementation_contract": {
+      "path": "provisional_shadow_v1/platform_failed_reexpansion_event_and_state_production_binding_v1_implementation_contract.json",
+      "blob": "5722594f04bf41a1e1980a694d08820c2a6864bf"
+    }
+  },
+  "frozen_behavior": {
+    "one_source_interaction_at_most_one_failed_event": true,
+    "no_lexical_or_recency_winner": true,
+    "missing_history_unknown": true,
+    "contradictory_history_conflict": true,
+    "explicit_rearm_required_for_second_candidate_failure": true,
+    "successful_reexpansion_resets_pending_candidate": true,
+    "d4_contributing_ids_losslessly_preserved": true,
+    "f6_confirmed_platform_frozen": true
+  },
+  "complexity": {
+    "new_strategy_states": 0,
+    "new_numeric_thresholds": 0,
+    "new_fixed_cooldowns": 0,
+    "new_fixed_time_windows": 0,
+    "new_candidate_or_mechanism_priority": 0,
+    "parallel_platform_state_machine": false
+  },
+  "governance": {
+    "test": "NOT_AUTHORIZED",
+    "test_read": false,
+    "test_availability_checked": false,
+    "outcome_read": false,
+    "pnl": false,
+    "real_market_data_read": false,
+    "forward_observation": "NOT_ACTIVE",
+    "activation_boundary": null,
+    "first_eligible_forward_cutoff": null,
+    "observation_count": 0,
+    "trading": "FORBIDDEN",
+    "orders": 0,
+    "fills": 0,
+    "execution_intents": 0,
+    "main_modified": false
+  },
+  "automatic_next_stage": false
+}
