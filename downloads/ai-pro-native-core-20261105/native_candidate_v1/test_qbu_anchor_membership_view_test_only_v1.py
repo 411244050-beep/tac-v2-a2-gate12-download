@@ -63,7 +63,7 @@ class _AnchorMembershipCase(_StagedRearmCase):
             view["events"][2],
             self.m.bind_event_to_episode(latest, episode)
         )
-        self.assertEqual(view["events"][1].anchor_episode_id, episode.anchor_episode_id)
+        self.assertEqual(view["events"][2].anchor_episode_id, episode.anchor_episode_id)
         self.assertEqual(original_d3.current_event(self.cand.candidate_id), before_event)
         self.assertIsNone(before_event.anchor_episode_id)
 
@@ -101,7 +101,7 @@ class _AnchorMembershipCase(_StagedRearmCase):
             information_cutoff=cutoff,history_complete=True
         )
         self.assertEqual(view["bound_event_ids"], ())
-        self.assertIsNone(view["events"][1].anchor_episode_id)
+        self.assertIsNone(view["events"][2].anchor_episode_id)
 
     def test_event_episode_target_conflict_rejected(self):
         prior, latest, episode, cutoff, _ = self._original_two_cycles()
