@@ -1,0 +1,120 @@
+{
+  "schema": "TAC_D4_STATIC_DETECTOR_CRITICAL_PRODUCTION_BINDING_V1_IMPLEMENTATION_FREEZE_MANIFEST",
+  "status": "FROZEN_PRODUCTION_BINDING_DATA_BLIND_EXACT_VERIFICATION_PASS",
+  "authorization": "AUTHORIZE_D4_STATIC_DETECTOR_EVIDENCE_AND_CRITICAL_INFORMATION_PRODUCTION_BINDING_FROM_FROZEN_SOURCE_ASSOCIATION_DATA_BLIND_EXACT_VERIFICATION_V1",
+  "repository": "411244050-beep/tac-v2-a2-external-runtime",
+  "branch": "provisional-shadow-v1-synthetic-data-blind",
+  "implementation_start_head": "0ab6aa6f87bdf8c78b134a970d74678a1feade29",
+  "final_verified_code_head": "7911fe4943996b5442cc09ad570ed7622d85381f",
+  "artifacts": {
+    "implementation": {
+      "path": "provisional_shadow_v1/d4_static_detector_critical_production_binding_v1.py",
+      "blob": "9eac94f81d874f41f25f856aee16c60ee8deb312"
+    },
+    "tests": {
+      "path": "provisional_shadow_v1/test_d4_static_detector_critical_production_binding_v1.py",
+      "blob": "d240d0a86dc7cc7088c723c671a1d89b00d3305e"
+    },
+    "workflow": {
+      "path": ".github/workflows/d4-static-detector-critical-production-binding-v1-exact-verification.yml",
+      "blob": "59547e1f5d5930a377f92bd71bf26736e048f82e"
+    },
+    "implementation_contract": {
+      "path": "provisional_shadow_v1/d4_static_detector_critical_production_binding_v1_implementation_contract.json",
+      "blob": "1f2c89b2e2d9d4026124b1e955629917b175604f"
+    },
+    "exact_verification": {
+      "path": "provisional_shadow_v1/d4_static_detector_critical_production_binding_v1_exact_execution_verification.json",
+      "blob": "8975f16bbfa68936fbeece72ad5f4dd9e2d91833"
+    }
+  },
+  "frozen_semantic_dependencies": {
+    "source_association_terminal_blob": "3f91e242e9bdfbb2ba6d266849145e654dcd0591",
+    "source_association_semantic_contract_blob": "33bd7a452b6c2f3789a10fa5e8ca18653df5bc9e",
+    "source_association_freeze_manifest_blob": "28db016bbc13fba665676b16bb3b75dffebbf85b"
+  },
+  "frozen_production_dependencies": {
+    "d4_lineage_projector_blob": "abc5be6afa7cab1d6f958c4b26e368d4963ec80b",
+    "d3_b5_d4_runtime_producer_blob": "97a02f5584c1446ca5ae016bad383e3ed0e18bb5",
+    "assembler_v2_blob": "a5f2b841cb44f9ff759232cc3ae72ff844cee02b",
+    "v3_typed_bridge_blob": "fa9842eab6851c2bb67f2f32ec09b20514271018"
+  },
+  "production_surface": [
+    "SourceCoverageFact",
+    "D4CriticalCoverageProof",
+    "D4StaticAssociationRequest",
+    "D4StaticAssociationProjection",
+    "project_d4_static_source_association",
+    "bind_v3_static_base"
+  ],
+  "frozen_behavior": {
+    "critical_complete_nonwatch": "KNOWN_TRUE",
+    "critical_complete_pure_watch": "NA",
+    "critical_missing_or_unknown": "UNKNOWN",
+    "critical_conflict_error_future": "ERROR",
+    "detector_source": "ALL_ACTIVE_FROZEN_MECHANISM_OBSERVATION_SOURCE_EVENT_IDS",
+    "detector_canonicalization": "SORTED_DEDUPLICATED",
+    "primary_only_detector_filtering": false,
+    "active_empty_source_event_ids": "BLOCKED",
+    "actual_update008_status_dominates_false_attestation": true,
+    "actual_mechanism_projection_status_dominates_false_attestation": true,
+    "actual_lineage_status_dominates_false_attestation": true,
+    "detector_identity_effect": "NONE",
+    "f9_order": "COVERAGE_THEN_CRITICAL_THEN_FROZEN_PREVIEW_THEN_DETECTORS_THEN_D4_STATIC_BINDING"
+  },
+  "verification": {
+    "run_id": 35498423841,
+    "job_id": 106045654972,
+    "run_number": 1,
+    "conclusion": "success",
+    "authority_blob_gate": "PASS",
+    "synthetic_test_functions": 13,
+    "static_firewall": "PASS",
+    "frozen_observation_preview_reused": true,
+    "frozen_lineage_binding_reused": true,
+    "assembler_round_trip": true,
+    "v3_mechanical_bridge": true
+  },
+  "intentional_remaining_boundary": {
+    "raw_completed_15m_to_coverage_proof": false,
+    "raw_extractor_v4_resumed": false,
+    "live_source_preflight_entered": false,
+    "production_projector_scope_only": true
+  },
+  "complexity_firewall": {
+    "new_strategy_states": 0,
+    "new_numeric_thresholds": 0,
+    "new_fixed_cooldowns": 0,
+    "new_fixed_time_windows": 0,
+    "new_mechanism_priority": 0,
+    "new_identity_selector": 0,
+    "parallel_strategy_state_machines": false,
+    "scientific_selector_additions": 0,
+    "research_only_machinery_promoted": false
+  },
+  "governance": {
+    "theta_minor": "OPEN",
+    "theta_intermediate": "OPEN",
+    "theta_major": "OPEN",
+    "theta_stop": "LOCKED_NO_NUMERIC_AUTHORIZATION",
+    "formal_f0": "NOT_CLOSED",
+    "test": "NOT_AUTHORIZED",
+    "test_read": false,
+    "test_availability_checked": false,
+    "outcome_read": false,
+    "pnl": false,
+    "real_market_data_read": false,
+    "real_forward_outcome_read": false,
+    "forward_observation": "NOT_ACTIVE",
+    "activation_boundary": null,
+    "first_eligible_forward_cutoff": null,
+    "observation_count": 0,
+    "trading": "FORBIDDEN",
+    "orders": 0,
+    "fills": 0,
+    "execution_intents": 0,
+    "main_head": "443096b185ac535564f34d1977a34f282eb684e1",
+    "main_modified": false
+  },
+  "automatic_next_stage": false
+}
