@@ -1,0 +1,94 @@
+{
+  "authority_effect": "NONE_DERIVATIVE_TRANSPORT_ONLY",
+  "classification": "NONSCIENTIFIC_PACKAGING_ONLY",
+  "deterministic_packaging": {
+    "base64_bytes": 70812,
+    "base64_newline_count": 0,
+    "base64_sha256": "cb966bf33f98b058c2bf7d70314b5ff18092395a0e0dd0757eb0a8cb778aeebe",
+    "recipe": "tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner strategy_rc1 | xz -9 | base64 -w0",
+    "tar_xz_bytes": 53108,
+    "tar_xz_sha256": "36111563b5778513d5803a3ec7c2b86f967a71d915fbcfd9bee5cb4ebebf8174"
+  },
+  "extraction": {
+    "member_count": 91,
+    "member_root": "strategy_rc1/",
+    "member_sha256_manifest": "strategy_rc1_SHA256SUMS.txt",
+    "member_sha256_manifest_bytes": 9711,
+    "member_sha256_manifest_sha256": "d997c67dd0e909c0a1b6eb849918e692cbe5739079605f3c78d96517d1f11b60",
+    "scientific_source_files_modified": false
+  },
+  "governance": {
+    "forward_observation": "NOT_ACTIVE",
+    "new_fixed_cooldowns": 0,
+    "new_fixed_time_windows": 0,
+    "new_strategy_states": 0,
+    "new_thresholds": 0,
+    "parallel_strategy_state_machines": false,
+    "pnl": false,
+    "scientific_state_changed": false,
+    "test": "NOT_AUTHORIZED",
+    "trading": "FORBIDDEN"
+  },
+  "parts": [
+    {
+      "bytes": 12000,
+      "filename": "strategy_rc1_exact.tar.xz.b64.part000",
+      "git_blob_sha1": "0591be862d74d7bbd2115a55d9353e24574fd60a",
+      "index": 0,
+      "sha256": "b40bd480d951bdf24a0457e2c33b5f860116a9b278cf96c490d10387c0103182"
+    },
+    {
+      "bytes": 12000,
+      "filename": "strategy_rc1_exact.tar.xz.b64.part001",
+      "git_blob_sha1": "00583cda97f9803c1049e5fa06aa54fd737eaa32",
+      "index": 1,
+      "sha256": "00274e8149662dafef076ff5555d78a7f2442a1f34c6bd991358e1e08e0445d6"
+    },
+    {
+      "bytes": 12000,
+      "filename": "strategy_rc1_exact.tar.xz.b64.part002",
+      "git_blob_sha1": "135599e458820c2cf5739eefe0190ba4c93d6e10",
+      "index": 2,
+      "sha256": "cb476d8c7cd4a84d5345e63e8678b8cc77ffaf98b4d95736e2af6a284b98da9d"
+    },
+    {
+      "bytes": 12000,
+      "filename": "strategy_rc1_exact.tar.xz.b64.part003",
+      "git_blob_sha1": "1c7c80afa877f586d764eea2044f533d9987f2d4",
+      "index": 3,
+      "sha256": "0304d444d68b855feb82cea8eb8b1d595be82e4e2db0043e8bdc79b1b52d2843"
+    },
+    {
+      "bytes": 12000,
+      "filename": "strategy_rc1_exact.tar.xz.b64.part004",
+      "git_blob_sha1": "1699d56753bf42fea345daa40cbe01ce5a001697",
+      "index": 4,
+      "sha256": "b1ac6df2c2836834290d7f70ec341339afe5fd4b44632203bad5a4d9754a5dc9"
+    },
+    {
+      "bytes": 10812,
+      "filename": "strategy_rc1_exact.tar.xz.b64.part005",
+      "git_blob_sha1": "efffd62e1682f52196dcd6dd90aa33f04f7906af",
+      "index": 5,
+      "sha256": "a0b68dd8a3a61bebcf7d1f02f43d85dc914f82225ebf3f4c4bfa1ae10dd91663"
+    }
+  ],
+  "reconstruction_invariants": [
+    "concatenate_parts_in_index_order",
+    "verify_base64_sha256",
+    "base64_decode",
+    "verify_tar_xz_sha256",
+    "xz_decompress_and_tar_extract",
+    "verify_all_91_strategy_rc1_member_sha256_entries",
+    "no_member_edit_or_semantic_transformation"
+  ],
+  "schema": "TAC_WP8_STRATEGY_RC1_EXACT_TRANSPORT_V1",
+  "upstream": {
+    "authority": "WP8_REFERENCE_IMPLEMENTATION_ARCHIVE_V1",
+    "bytes": 164827,
+    "filename": "TAC_RC1_NONTRADING_WP0_WP1_WP2_WP3_WP4_WP5_WP6_WP7_WP8_V1.tar.gz",
+    "library_file_id": "file_0000000051608206a320513dbe90040c",
+    "raw_sha256": "1ad9926fc023ec5bc613a2e1810e1e95f77e60508006bdd8bf566675d9b6ffac",
+    "stage_manifest_raw_sha256": "aed29ac77a15f082db68c0503b926f035b983b6b18951af73e6cecaf38a99a5f"
+  }
+}
