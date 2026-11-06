@@ -127,7 +127,6 @@ class OriginalHistoricalEventDelivery(unittest.TestCase):
         self.assertEqual(out.status, "CONFLICT")
         self.assertEqual(out.reason, "DIVERGENT_EVENT_RECORDS")
         self.assertIn(
-            "DIVERGENT_EVENT_RECORDS" if False else
             "DIVERGENT_EVENT_RECORD:" + watch.event_id,
             out.conflict_refs
         )
