@@ -207,5 +207,75 @@ class ShortRearmGapAndStaging(original_probe.FrozenB3D3RearmGap):
             )
 
 
+    def test_frozen_d3_rearm_rejects_same_cutoff_and_no_separation(self):
+        self._original_four()
+        m = self.m
+        prior = self.d3.current_event(self.cand.candidate_id)
+        bar, snap, geo = self._fifth_raw()
+        self.assertTrue(geo.separated)
+        same_cutoff = replace(geo, information_cutoff=prior.resolved_at)
+        self.assertEqual(
+            m.rearm_after_resolution(prior, geometry=same_cutoff), prior
+        )
+        no_separation = replace(geo, separated=False)
+        self.assertEqual(
+            m.rearm_after_resolution(prior, geometry=no_separation), prior
+        )
+        self.assertIsNone(self.b3.pending_state(bar.symbol, self.cand.candidate_id))
+
+    def test_wrong_trend_or_broken_segment_cannot_arm_pending(self):
+        self._original_four()
+        m = self.m
+        bar, snap, geo = self._fifth_raw()
+        valid = self._observation(
+            bar, snap, geo, m.InteractionControl.UNARMED
+        )
+        for replacement in (
+            dict(current_trend_direction=m.TrendDirection.LONG),
+            dict(canonical_continuity_intact=False),
+            dict(candidate_available=False),
+        ):
+            staged = m.RuntimeB3PriceDrivenReturnProducerV1.restore_state(
+                self.b3.export_state()
+            )
+            obs = replace(valid, **replacement)
+            out = staged.process_batch(
+                "SHORT_INVALID_" + next(iter(replacement)), (obs,)
+            )
+            self.assertTrue(out[0].reason.startswith("RESET:"))
+            self.assertIsNone(staged.pending_state(
+                bar.symbol, self.cand.candidate_id
+            ))
+
+    def test_short_b3_restart_restores_completed_transaction_and_pending(self):
+        self._original_four()
+        m = self.m
+        bar, snap, geo = self._fifth_raw()
+        staged = m.RuntimeB3PriceDrivenReturnProducerV1.restore_state(
+            self.b3.export_state()
+        )
+        obs = self._observation(
+            bar, snap, geo, m.InteractionControl.UNARMED
+        )
+        first = staged.process_batch("SHORT_RESTART_TX", (obs,))
+        frozen = staged.export_state()
+        restored = m.RuntimeB3PriceDrivenReturnProducerV1.restore_state(frozen)
+        self.assertEqual(restored.export_state(), frozen)
+        self.assertEqual(
+            restored.process_batch("SHORT_RESTART_TX", (obs,)),
+            first
+        )
+        self.assertIsNotNone(
+            restored.pending_state(bar.symbol, self.cand.candidate_id)
+        )
+        with self.assertRaisesRegex(
+            m.RuntimeB3Conflict, "SAME_TRANSACTION_DIFFERENT_INPUT"
+        ):
+            restored.process_batch(
+                "SHORT_RESTART_TX",
+                (replace(obs, canonical_continuity_intact=False),)
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
