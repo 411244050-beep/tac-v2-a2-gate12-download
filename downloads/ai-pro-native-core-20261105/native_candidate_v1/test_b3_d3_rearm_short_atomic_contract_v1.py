@@ -48,6 +48,28 @@ class ShortRearmGapAndStaging(FrozenB3D3RearmGap):
             producer=producer, d3=d3
         )
 
+    def _original_four(self):
+        data = (
+            ("110", "112", "108", "110"),
+            ("105", "106", "99", "101"),
+            ("102", "105", "98", "103"),
+            ("103", "108", "101", "106"),
+        )
+        rows = [self._step(i, *p) for i, p in enumerate(data)]
+        trace = [
+            (row[3]["producer"].reason, row[3]["event"].control.value,
+             row[2].separated, row[2].test, row[2].approach,
+             row[2].d_close, row[2].d_range_nearest)
+            for row in rows
+        ]
+        self.assertEqual(
+            [x[3]["event"].control.value for x in rows],
+            ["ARMED", "ARMED", "INTERACTION_ACTIVE", "RESOLVED"],
+            trace,
+        )
+        self.assertEqual(len(self.b3.state.lineages), 0)
+        return rows
+
     def _fifth_raw(self):
         m = self.m
         now = self.t0 + 4 * 900000
