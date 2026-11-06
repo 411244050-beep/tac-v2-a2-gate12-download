@@ -22,13 +22,13 @@ https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/
 - _u002 ~282-330 produces geometry for all selected original causal snapshots, retaining multiplicity (1 vs many). _u007 ~333-400 consumes per-snapshot original geometry and causal event evidence; _u008 ~402-479 registers all concurrently provided original candidates.
 
 Runtime B3 production Git Blob 0f008c9f2c13ae90bcb32d299c149fdf250a3392:
-https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/frozen_evidence_producers_v1/runtime_b3_price_driven_return_production_state_v1.py
+https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/d4_market_event_lineage_binding_20261106/runtime_b3_price_driven_return_production_state_v1.py
 - RuntimeB3Observation includes actual bar, original snapshot + same-cutoff geometry, InteractionControl, frozen params, candidate ID/source segment, original episode/direction/continuity.
 - _validate_active_surface original rejects missing geometry, mismatch of snapshot IDs/segments/episodes/directions, geometry.information_cutoff != bar.close_time, non-causal snapshots or invalid arming scale.
 - project_cutoff_batch processes ordered observations with transaction and frozen pending lineage, not a read-only harmless call; MUST NOT run now.
 
 Original V3 live authority bridge Git Blob fa9842eab6851c2bb67f2f32ec09b20514271018:
-https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/d2_genesis_watch_handoff_20261106/live_runtime_authority_extraction_packet_orchestration_binding_v3.py
+https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/v6_pregenesis_bootstrap_20261106/live_runtime_authority_extraction_packet_orchestration_binding_v3.py
 - snapshot_projection_from_authoritative_producers ~190-221 accepts real runtime B3 result + structural acceptance + correct-side recovery, and maps exactly to D3SnapshotProjectionAuthority (never consumes latched_evidence on same qualification cutoff).
 - initial_authority_from_frozen_producers ~224-241 carries exact candidates and sorted scoped snapshot projections, not empty by fiat.
 
