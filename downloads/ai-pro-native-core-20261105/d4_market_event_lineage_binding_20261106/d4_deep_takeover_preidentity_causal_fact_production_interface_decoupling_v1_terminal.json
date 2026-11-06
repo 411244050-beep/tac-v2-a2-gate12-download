@@ -1,0 +1,111 @@
+{
+  "schema": "TAC_D4_DEEP_TAKEOVER_PREIDENTITY_CAUSAL_FACT_PRODUCTION_INTERFACE_DECOUPLING_V1_TERMINAL",
+  "status": "PASS_STOP_AND_REPORT",
+  "classification": "DEEP_TAKEOVER_PREIDENTITY_CAUSAL_FACT_AND_D4_SAME_EVENT_PRODUCTION_DEPENDENCY_CYCLE_MECHANICALLY_DECOUPLED",
+  "authorization": "AUTHORIZE_D4_DEEP_TAKEOVER_PREIDENTITY_CAUSAL_FACT_PRODUCTION_INTERFACE_DECOUPLING_DATA_BLIND_EXACT_VERIFICATION_V1",
+  "repository": "411244050-beep/tac-v2-a2-external-runtime",
+  "branch": "provisional-shadow-v1-synthetic-data-blind",
+  "closure_basis": {
+    "pre_terminal_head": "9c5a0e4b3cf12fa2bcb907356ae4c477b7f67d1c",
+    "main_head": "443096b185ac535564f34d1977a34f282eb684e1",
+    "prior_v3_terminal_blob": "a4f9a6169cfac706808a9eae4a7a97266403ae29",
+    "prior_v3_blocker_blob": "8418acb7b355f7ebe44db5d3826aef4693b087d4",
+    "frozen_deep_producer_blob": "97a02f5584c1446ca5ae016bad383e3ed0e18bb5",
+    "frozen_deep_semantic_contract_blob": "7889626f725e8dce2cf7c51fa277c72d82559623",
+    "implementation": {
+      "preidentity_producer_path": "provisional_shadow_v1/d4_deep_takeover_preidentity_causal_fact_production_interface_v1.py",
+      "preidentity_producer_blob": "d268f94a4a28e740ceb88075aa271d8d0fececab",
+      "decoupling_binder_path": "provisional_shadow_v1/d4_deep_takeover_preidentity_causal_fact_production_interface_decoupling_v1.py",
+      "decoupling_binder_blob": "0e82c9fc24f6df05ce20e4a423731f4fd9e38fd9",
+      "d4_lineage_projector_path": "provisional_shadow_v1/d4_market_event_lineage_production_binding_v2.py",
+      "d4_lineage_projector_blob": "f334155bbb46ec2ff0ee748555cb15c1485d3036",
+      "test_blob": "af4b025848a361948cb75cd3a1355f78ef42dc69"
+    },
+    "verification": {
+      "d4_regression_run_id": 35577977946,
+      "d4_regression_job_id": 106264034826,
+      "d4_regression_conclusion": "success",
+      "decoupling_run_id": 35577978068,
+      "decoupling_job_id": 106264035211,
+      "decoupling_conclusion": "success",
+      "decoupling_workflow_blob": "7ac0de85ef7c12fccc09b0909771c2cb0c0603f6"
+    }
+  },
+  "mechanically_closed": {
+    "preidentity_deep_causal_facts_exposed_without_market_event_identity_input": true,
+    "d4_deeper_continuation_consumes_preidentity_facts_without_deep_projection": true,
+    "d4_same_event_precedes_identity_bool_binding": true,
+    "frozen_produce_deep_takeover_called_only_after_authoritative_same_event": true,
+    "active_shallow_opportunity_id_and_market_event_id_exactly_bound": true,
+    "first_deep_transition_verified": true,
+    "already_authoritative_later_deep_continuation_verified": true,
+    "no_self_proof_verified": true,
+    "restart_replay_stability_verified": true,
+    "transaction_ordering_verified": true
+  },
+  "preserved_prohibitions": {
+    "default_same_market_event_identity_true": false,
+    "synthetic_true_promoted_to_production": false,
+    "deep_evidence_direct_construction_bypass": false,
+    "downstream_d4_identity_used_as_its_own_causal_proof": false,
+    "deep_mechanism_dropped_to_avoid_cycle": false,
+    "new_scientific_selector": false,
+    "new_numeric_thresholds": 0,
+    "new_fixed_cooldowns": 0,
+    "new_fixed_time_windows": 0,
+    "new_strategy_states": 0,
+    "frozen_deep_producer_modified": false,
+    "broader_raw_extractor_resumed": false
+  },
+  "implementation_disposition": {
+    "d4_lineage_projector_mechanical_interface_extended": true,
+    "frozen_d4_same_event_science_changed": false,
+    "frozen_deep_science_changed": false,
+    "frozen_deep_producer_modified": false,
+    "broader_raw_runtime_extractor_created": false,
+    "complete_typed_authority_end_to_end_not_claimed": true,
+    "assembler_v2_end_to_end_not_claimed": true,
+    "staged_engine_end_to_end_not_claimed": true
+  },
+  "governance_terminal_state": {
+    "theta_minor": "OPEN",
+    "theta_intermediate": "OPEN",
+    "theta_major": "OPEN",
+    "theta_stop": "LOCKED_NO_NUMERIC_AUTHORIZATION",
+    "formal_f0": "NOT_CLOSED",
+    "test": "NOT_AUTHORIZED",
+    "test_read": false,
+    "test_availability_checked": false,
+    "outcome_read": false,
+    "pnl": false,
+    "real_market_data_read": false,
+    "real_forward_outcome_read": false,
+    "trading": "FORBIDDEN",
+    "forward_observation": "NOT_ACTIVE",
+    "activation_boundary": null,
+    "first_eligible_forward_cutoff": null,
+    "observation_count": 0,
+    "orders": 0,
+    "fills": 0,
+    "execution_intents": 0,
+    "main_head": "443096b185ac535564f34d1977a34f282eb684e1",
+    "main_modified": false
+  },
+  "required_next_boundary": {
+    "automatic": false,
+    "requires_new_independent_explicit_authorization": "LIVE_RUNTIME_RAW_AUTHORITY_EXTRACTION_AND_PACKET_ORCHESTRATION_BINDING_RESUMPTION_FROM_FROZEN_DEEP_PREIDENTITY_DECOUPLING_DATA_BLIND_EXACT_VERIFICATION_V4",
+    "purpose": "Resume the broader raw completed-15M to complete typed authority, Packet Assembler V2, and staged-engine binding using the now-acyclic frozen deep preidentity interface. Remain data-blind and do not enter live-source probing, forward observation, TEST, outcomes, PnL, or trading."
+  },
+  "downstream_not_entered": {
+    "broader_raw_runtime_extractor": false,
+    "live_source_preflight": false,
+    "real_source_probe": false,
+    "live_collection": false,
+    "forward_observation": false,
+    "statistical_analysis_module": false,
+    "tailscale_private_web_ui": false,
+    "test": false,
+    "trading": false
+  },
+  "stop": "TERMINAL_FORMED_STOP_AND_WAIT_FOR_NEW_EXPLICIT_AUTHORIZATION"
+}
