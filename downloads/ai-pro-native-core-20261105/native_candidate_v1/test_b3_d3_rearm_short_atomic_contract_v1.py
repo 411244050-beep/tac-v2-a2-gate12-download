@@ -10,10 +10,10 @@ from fractions import Fraction
 from types import SimpleNamespace
 import unittest
 
-from test_b3_d3_rearm_gap_source_only_v1 import FrozenB3D3RearmGap
+import test_b3_d3_rearm_gap_source_only_v1 as original_probe
 
 
-class ShortRearmGapAndStaging(FrozenB3D3RearmGap):
+class ShortRearmGapAndStaging(original_probe.FrozenB3D3RearmGap):
     """Mirror the public LONG fixture into a valid frozen SHORT D3/B3 cycle."""
 
     def setUp(self):
@@ -43,10 +43,37 @@ class ShortRearmGapAndStaging(FrozenB3D3RearmGap):
         return neg(op), neg(lo), neg(hi), neg(cl)
 
     def _step(self, idx, op, hi, lo, cl, producer=None, d3=None):
-        return super()._step(
-            idx, *self.mirror(op, hi, lo, cl),
-            producer=producer, d3=d3
+        m = self.m
+        d3 = d3 or self.d3
+        producer = producer or self.b3
+        now = self.t0 + idx * 900000
+        op, hi, lo, cl = self.mirror(op, hi, lo, cl)
+        bar = m.CanonicalBar.from_values(
+            symbol="BTCUSDT", open_time=now, close_time=now + 899999,
+            open=op, high=hi, low=lo, close=cl,
         )
+        pre = d3.update_000_pre_bar_view(bar.open_time)
+        self.assertEqual(len(pre.snapshots), 1)
+        snap = pre.snapshots[0]
+        geo = d3.update_002_capture_geometry(
+            bar=bar, information_cutoff=bar.close_time, snapshot=snap
+        )
+        result = m._tac_frozen_b3_update007_step(
+            producer=producer, d3=d3, candidate=self.cand,
+            snapshot=snap, geometry=geo, bar=bar,
+            current_trend=SimpleNamespace(
+                episode_id="TE_REARM_PROBE",
+                direction=m.TrendDirection.SHORT,
+            ),
+            source_continuity_intact=True,
+            candidate_terminally_replaced=False,
+            history_complete=True,
+        )
+        return bar, snap, geo, result
+
+    def _observation(self, bar, snap, geo, control):
+        return replace(super()._observation(bar, snap, geo, control),
+                       current_trend_direction=self.m.TrendDirection.SHORT)
 
     def _original_four(self):
         data = (
