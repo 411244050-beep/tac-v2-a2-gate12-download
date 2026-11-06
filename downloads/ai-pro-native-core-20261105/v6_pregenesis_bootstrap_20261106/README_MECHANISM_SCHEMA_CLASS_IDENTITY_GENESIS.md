@@ -23,7 +23,7 @@ This validates only the class identity at that guard, NOT the presence/absence o
 
 Pinned frozen sources and Git Blob IDs:
 - V6, Git Blob 2f12e518858be4758d81d0027c6045466ddf38f0: https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/d2_genesis_authority_handoff_20261106/live_runtime_raw_authority_extraction_packet_orchestration_binding_v6.py
-- Lineage v2, Git Blob f334155bbb46ec2ff0ee748555cb15c1485d3036: https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/original_d4_dependencies_20261106/d4_market_event_lineage_production_binding_v2.py
+- Lineage v2, Git Blob f334155bbb46ec2ff0ee748555cb15c1485d3036: https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/d4_market_event_lineage_binding_20261106/d4_market_event_lineage_production_binding_v2.py
 - D3/D4 assembler v2, Git Blob a5f2b841cb44f9ff759232cc3ae72ff844cee02b: https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/original_d4_dependencies_20261106/authoritative_d3_d4_evidence_packet_assembler_resumption_v2.py
 - Frozen V6 bootstrap checkpoint protocol: https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/v6_pregenesis_bootstrap_20261106/README_POST_SHADOW_REQUIRE_KNOWN_CALLSITE.md
 
