@@ -1,0 +1,34 @@
+# TAC isolated next step: D2 genesis prehistory and final-summary stability (2026-11-06)
+
+## Actual present state — carry forward without re-running prior positives
+
+Last Binance TEST_ONLY result, already measured:
+- 78 F9 cutoffs **per direction**, first cutoff `74699999`, also recorded trend episode birth cutoff for both LONG and SHORT.
+- Original frozen `latest_establishment_evidence` was **actually called twice**, once per direction at creation. Both `GENESIS_NO_EVIDENCE`, because only **one available intermediate pivot** was present at the creation cutoff. `TrendEstablishmentRecord` count = 0.
+- 156 D4 lineage `prepare` calls: all `HISTORY_COVERAGE_NOT_ESTABLISHED`; 0 commits, 156 static/source `BLOCKED_CRITICAL_UNKNOWN`; zero D4 final packets and zero four-mechanism compositor calls.
+- Isolated reporter once wrote 1254-byte aggregate with markers `SUMMARY_STARTED / SERIALIZED / WRITTEN / FLUSHED`; **latest** instrumented invocation ended at final `SHORT 143999999 STATIC_DONE` without a confirmed summary. Treat as a separate finalization path limitation.
+- Core original source `strategy_rc1` 91/91 SHA256 verified; `platform.py`, `wp1_reference.py`, `establishment.py` load. Platform production **scientific calls = 0**.
+
+## Pinned original implementation and already-published dependencies
+
+- [Original V6 genesis extraction](https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/d2_genesis_authority_handoff_20261106/live_runtime_raw_authority_extraction_packet_orchestration_binding_v6.py), Git Blob `2f12e518858be4758d81d0027c6045466ddf38f0`. In `_genesis`, original implementation requires authentic `raw_cache.d2.update_006_trend.episode_start_cutoff == bar.close_time`, cumulative `update_005_intermediate` pivots, frozen `strategy_rc1.d2_market_state.establishment.latest_establishment_evidence`, frontier/direction matching, and source pivot IDs before `TrendEstablishmentRecord` can be built.
+- [Exact original 91-file reference package and hashes](https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/wp8_strategy_rc1_full_original_20261106/README_RECOVERY_HANDOFF.md).
+- [Existing original D4 causal lineage production handoff](https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/d4_market_event_lineage_binding_20261106/README_NATIVE_HANDOFF.md).
+
+**Correction to older handoff**: the window starts **at**, not after, the recorded episode creation cutoff. This does NOT establish complete pre-genesis provenance. Earliest listed cutoff is not the earliest underlying source bar, nor proof the D2 episode was actually created from complete history.
+
+## Work items: do only authoritative/source-coverage progress
+
+1. **Inventory all available earlier offline evidence without I/O to live exchange / accounts.** Inspect current isolated adapter's original canonical closed-bar series, D2 chronological UPDATE-005 intermediate history, D2 state recovery/checkpoints, provenance IDs, and any existing cached source events prior to `74699999`. Provide a source inventory listing: earliest authentic close cutoff, last prior close before genesis, intermediate pivot IDs and `confirmed_at`, their origin bar refs, and whether an exact checkpoint plus its causal history is present. Never infer unobserved bars or pivot events.
+2. **Verify actual episode-birth provenance** rather than trusting merely `trend.episode_start_cutoff` from a preloaded state. Confirm exact frozen D2 UPDATE-006 transition from absence/prior state to episode-creation at `74699999`, and exact D2 frontier intermediate pivot ID. If trend state was injected, truncated, synthetic, or materialized without a matching D2 source transition, report `EPISODE_BIRTH_PROVENANCE_UNVERIFIED`, not an authoritative genesis.
+3. If authentic pre-genesis closed 15m history and source event lineage **are already available**, replay *only the missing earlier span* in TEST_ONLY through original frozen D1/D2 causal UPDATE-005/006 logic, chronological no-leakage. Retain prior pivots and canonical segment continuity, reconstruct `latest_establishment_evidence` at creation cutoff, verify direction/frontier matching. Do not replace previously approved B3/B5/QBU functions or change scientific thresholds. State the exact additional bar range/replayed count; run only once unless a bounded adapter bug is fixed.
+4. If the offline prehistory **is not available**, return a precise `GENESIS_PREHISTORY_SOURCE_UNAVAILABLE` report, with what original source history or D2 checkpoint is missing. Do not attempt to solve it using the already-exhausted 78 cutoffs, nor manufacture source history, and do not promote the older archived 160-bar synthetic verification fixture to authority for this current replay.
+5. Keep `TrendEstablishmentRecord` and `D4MarketEventLineageProductionProjectorV2` blocked until authoritative record exists. Do not produce START_FIRST_EVENT from empty ledger, trend KNOWN, or event ID. Zero opportunity and zero order is the correct outcome when evidence is missing.
+6. Independently investigate latest-run **summary finalization after STATIC_DONE**, without triggering 156 new science calls: print stage marker immediately after last static hook, before summary invocation, just before serialization, flush, close, return, and process exit. Have the summary operate solely on already-captured scalar counts (not full D3/F9 object graph), with bounded output/explicit flush. Report whether final execution ends normally. Earlier successful summary and latest unsuccessful summary must remain distinguishable.
+7. Independently check platform producer's *actual* source availability (`history_complete`, coverage ref, confirmation ATR, frozen platform/pivot data), without turning these to KNOWN. If missing, leave platform science calls at zero; if all authentic inputs are present, call exact original isolated producer once at an eligible cutoff and report output. No synthetic backfill.
+
+## Expected concise report
+
+`earliest_closed_bar`; `genesis_cutoff`; `was_original_D2_birth_transition_observed`; `prior_intermediate_pivots_available`; `missing_source_range_or_state`; `valid_genesis_records`; `lineage_prepare/commit/blocked`; `platform_source_status`; `latest_summary_flush/exit`; `next_true_blocker`.
+
+**Safety/immutability:** pinned `strategy.py` SHA256 `792d2818d8495889319de5b3e6019ac0e856d27a59c6c959ac355ff239765a5f`; `spec.yaml` SHA256 `4fb02c4559fc2fe8ee4e95390b76fce132f5af34c4f7e23a0091f1c8f8108fd1`; 528 frozen symbols unchanged, `TAC_LIVE_ENABLED=0`; subscriptions off; TEST_ONLY isolated memory; no account, market API, orders, Paper/Live or saved deployment. Preserve `PORT007_UNRESOLVED_PRODUCTION_ALLOCATION_BLOCKED` and `BLOCKED_D3_B3_JOINT_PERSISTENCE`; in-memory COMMITTED is not durable persistence.
