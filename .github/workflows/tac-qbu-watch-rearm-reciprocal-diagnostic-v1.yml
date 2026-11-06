@@ -1,0 +1,31 @@
+name: TAC original Minor WATCH-REARM reciprocal diagnostic TEST_ONLY
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'downloads/ai-pro-native-core-20261105/native_candidate_v1/test_qbu_minor_watch_rearm_reciprocal_diagnostic_v1.py'
+      - '.github/workflows/tac-qbu-watch-rearm-reciprocal-diagnostic-v1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original_minor_watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TAC_LIVE_ENABLED: '0'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Run isolated frozen original minor WATCH test
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$TAC_LIVE_ENABLED" = "0"
+          cd downloads/ai-pro-native-core-20261105/native_candidate_v1
+          python -m unittest -v test_qbu_minor_watch_rearm_reciprocal_diagnostic_v1.py
