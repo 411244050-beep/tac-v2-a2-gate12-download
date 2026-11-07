@@ -1,0 +1,45 @@
+# TAC V6: revise cold-recovery gates after full 83-input fingerprint parity (ZERO CUTOFF)
+2026-11-07 | Frozen upstream pin 1f2499ecb84bfefea063992d48f23949c65c5578 | STRICT SYNTH TEST_ONLY.
+
+## Evidence adjudication, replacing earlier overstrict gates
+
+**Confirmed now:**
+- All original BAR82, BAR83 V6 state bytes and the verified tar.gz archive have been lost after ephemeral workspace reclamation. BACKUP_LOST=YES; RESTORABLE_BAR82=NO; RESTORABLE_BAR83=NO; durable private backup not configured.
+- Surviving 5,890-byte scalar manifest contains the FULL historically recorded BAR82 original V6 state SHA256 **b342a5d01d3fb094ef350ef47ac23c51bcad408b14459590795b7d0a38a203fa**, old length 13,683,812; manifest SHA256 **6b3543082232deb8481e2c534444cf358885d8de26248d9dc1e6f38ecb3fc581**.
+- Historical BAR83 original state SHA256 **a074d852158c99e5eccedde1643f19ef6453ef4064cce6fc481cfb762b023617**, length 13,937,694. Its historical SYNTH genesis completed GENESIS_FULL_TYPED_STAGED with D4 effective 6/6 COMPLETE, F9 UPDATE-011 PASS, F9 UPDATE-015 BLOCKED, lineage committed. This is only a HISTORICAL engineering result; none of these bytes exist now.
+- A reconstructed Python random.Random(0) generator, with once per row randrange(-30,31) then twice randrange(1,20), generated 83 ordered CanonicalBar-like source inputs with open_time=i*900000, close_time=i*900000+899999, and historical OHLC / volume=1 / is_closed=true semantics. Its canonical sorted-JSON 83-input fingerprint was independently measured as **102186c82d3f08e944e848e95d35e27e67907b4c779c9f79e067778529e6c027**, EXACTLY matching the surviving historical bar83 scalar manifest. Reconstructed 83rd bar live.digest **ccb39c38ae5ce54267bc0de082defc2f3d5c909285bb0a0bfbc4e748296c7bfc** also matched historical completed.
+- Current reconstructed digest-list aggregator sha256("\\n".join(f"{i}:{digest}")) = **32c6410479466fc947e819a404b6fe4b2a94216f5c1b25d0f6e6ee2e5a176b06**; this is current reproducibility evidence, NOT a historical aggregate comparison unless an identical historical value appears.
+- Existing reconstructed fixture dossier `tac_source/FIXTURE_PROVENANCE_DOSSIER_20261107.json`: 7,947 bytes and SHA256 `7dde7ae9c87389a404adecaaafa4c7a93a6f8422bbb7de645baf4beed55202cd` (still in temporary AI Pro environment if not reclaimed). Its producer is RECONSTRUCTED_GENERATOR_NOT_ORIGINAL_SOURCE. The original exact 83-row generator source code/own Git blob remains unavailable, so FIXTURE_ORIGINAL_SOURCE_UNAVAILABLE remains a **provenance limitation**, not proof the 83 input sequence differs.
+- The original V6 upstream test file `test_live_runtime_raw_authority_extraction_packet_orchestration_binding_v6.py` Git blob `62afcda795b2b372b46158b1d32e4b6ab4f3e8e4` defines a DIFFERENT 40-row stair fixture; it must NOT be substituted.
+- 528 frozen symbol list, immutable main strategy.py SHA256 `792d2818d8495889319de5b3e6019ac0e856d27a59c6c959ac355ff239765a5f`, spec.yaml SHA256 `4fb02c4559fc2fe8ee4e95390b76fce132f5af34c4f7e23a0091f1c8f8108fd1`. Seven previously proven loader identity contracts preserved in `LOADER_IDENTITY_FIX_MANIFEST_20261107.md`; do not silently skip or rewrite them.
+
+**Revised assessment**:
+1. INPUT_DATA_FINGERPRINT_PARITY=YES at the recorded 83-input sorted-JSON hashing convention. BAR83_DIGEST_PARITY=YES. Do not extrapolate that historical original-generator source provenance has been recovered.
+2. ORIGINAL_FIXTURE_SOURCE_PROVENANCE=UNAVAILABLE. This is a limitation of attribution, NOT necessarily a hard blocker to a **strictly checksum-gated ENGINEERING state equivalence replay**, if a later bounded replay is authorized and all other gates pass.
+3. BAR82_STATE_PARITY=UNPROVEN until actual ORIGINAL V6 exported bytes from a subsequent authorized 82-bar cold start hash to the FULL historical BAR82 SHA above. Missing historical bar82 SINGLE-BAR digest is NOT a required gate when exact full V6 checkpoint state hash and 83-bar canonical input fingerprint are available.
+4. No replay is authorized now because PRIVATE_DURABLE_SINK_UNCONFIGURED, BACKUP_LOST and the user has not explicitly approved cold execution.
+
+## Source-proven original state equality gate
+
+Original V6 file Git Blob 2f12e518858be4758d81d0027c6045466ddf38f0:
+https://raw.githubusercontent.com/411244050-beep/tac-v2-a2-gate12-download/main/downloads/ai-pro-native-core-20261105/d2_genesis_authority_handoff_20261106/live_runtime_raw_authority_extraction_packet_orchestration_binding_v6.py
+`export_state()` produces canonical sorted/separator JSON; `state_digest()` is SHA256(`export_state().encode("utf-8")`). The BAR82 full digest is a direct byte-equivalence criterion on original canonical serialized state, stronger for the complete V6 internal state than an isolated source bar digest.
+
+## IMMEDIATE TASK: 0 bars, save reproducibility proof and define PRIVATE backup capability
+
+1. Audit and **freeze the reconstructed input-generation program AS RECONSTRUCTED**, with source bytes and full SHA256, exact Python version, PRNG and call order, OHLC recurrence and Fraction conversion. Verify the entire 83-input ordered canonical serialization and historical fingerprint. Where possible keep a 83-row per-bar digest vector in an exact scalar local manifest, with its own algorithm and hash. Do not invent original source provenance or claim that the reconstructed source was in the original upstream Git commit.
+2. Verify surviving scalar manifest and fixture dossier bytes, size and hash, and the complete BAR82/BAR83 expected V6 STATE digests. Keep a full original source-blob and deterministic-loader bootstrap lock. Source lock is not a substitute for state bytes.
+3. Enumerate only private sinks the USER explicitly authorizes (user-controlled NAS over an actually reachable secure connection, private object storage, a specifically chosen private repository, or another confidential user-controlled store). Use least privilege and avoid exposing tokens/passwords in chat. NO default/public GitHub backup, NO ad-hoc encoded dump to a public repo, NO assumption that GitHub connector capability equals AI Pro runtime network capability.
+4. AFTER a concrete user-authorized private destination is supplied, use a small NONSTATE canary to test actual external connection, ACL, write, readback and SHA256; if remote unavailable, report PRIVATE_SINK_NOT_REACHABLE, do not begin strategy replay. For storage accepted as DURABLE, actual remote readback and hash of checkpoint bytes must later succeed outside the transient AI Pro workspace. Maintain a second independent user-controlled copy when practical.
+5. Draft **a prospective, not yet authorized** finite replay plan with at most 83 outer V6.run_cutoff calls, exact reconstructed fixture source and seven class/module identity aliases, immutable frozen science, zero real market/trading interfaces. At index 81/close_time=73799999, immediately `export_state()`, hash compare to **b342a5d01d3fb094ef350ef47ac23c51bcad408b14459590795b7d0a38a203fa**, verify exact expected byte length 13,683,812, and atomic SAVE to the verified PRIVATE destination + remote readback + clean independent `restore_state()`. Only if BAR82 matches exactly may bar index 82, close_time 74699999 be run once, then immediately export and compare to **a074d852158c99e5eccedde1643f19ef6453ef4064cce6fc481cfb762b023617**, length 13,937,694, durable save, remote readback and independent clean restore. If either check fails, STOP, report exact first error/difference, do NOT silently relabel a new state as historical parity. No auto retries.
+6. For now, do NOT call V6.run_cutoff, deterministic engine.run_cutoff_batch, RuntimeB3 batches, QBU/D4 producers or perform "dry" K bar replay. Historical 4 causal prebar snapshots at bar84 open_time 74700000 remain facts from LOST prior state, not currently measurable. No V7 source edit/deployment or bar84 execution. Mature-with-prebar V6 orchestration gap E1-E5 remains separate.
+7. Preserve independent production blockers `PORT007_UNRESOLVED_PRODUCTION_ALLOCATION_BLOCKED` (F9 UPDATE-015) and `BLOCKED_D3_B3_JOINT_PERSISTENCE`. These are NOT removed by synthetic genesis equality.
+
+## Required concise next report
+
+- Source lock: reconstructed generator actual file SHA256, code revision and 83-input fingerprint equality; original generator unavailable; optional full 83 per-bar digest manifest hash.
+- Complete full expected BAR82 and BAR83 state digests, separate source/blob vs state SHA, scalar metadata / dossier bytes verified.
+- PRIVATE_DURABLE_SINK status: USER_AUTHORIZED? ACTUALLY_AI_PRO_REACHABLE? REMOTE_CANARY_VERIFIED? (all NO/NOT_TESTED until authorized).
+- Allowed replay=NO; current outer K/engine/RuntimeB3 calls all ZERO, no changes to original frozen scientific code.
+- Explicit practical private sink setup choices and one exact user decision needed; do not repeatedly run no-op cold audits waiting for backup.
+- BACKUP_LOST=YES, RESTORABLE_BAR82=NO, RESTORABLE_BAR83=NO, PORT007 and D3/B3 joint persistence still BLOCKED, V7 mature snapshot link not implemented.
